@@ -48,9 +48,37 @@
   #hornBtn{right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);width:58px;height:58px;font-size:26px;
     font-variant-numeric:tabular-nums}
   #hornBtn.cooling{opacity:.35;font-size:20px;font-family:Georgia,serif;color:var(--brass)}
-  #flameBtn{right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 84px);width:58px;height:58px;font-size:26px;
-    border-color:#ff8c3a;animation:flamepulse .9s ease-in-out infinite}
+  /* BETA13 — the 🔥 button comes back as FREEDOM MODE. It is not a round
+     button in a column any more: it is a banner across the middle of the
+     screen, because it appears perhaps once in a drive and you should not
+     have to hunt for it. Sits above the speed gauge, clear of the brake. */
+  #flameBtn{position:fixed;z-index:8;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    left:50%;transform:translateX(-50%);
+    bottom:calc(env(safe-area-inset-bottom,0px) + 92px);
+    width:186px;height:52px;border-radius:26px;
+    font-family:Georgia,'Times New Roman',serif;font-size:15px;letter-spacing:.22em;
+    text-transform:uppercase;font-weight:700;color:#fff;
+    border:2px solid rgba(255,255,255,.85);background:rgba(20,10,10,.7);
+    animation:freedompulse .5s steps(3,end) infinite}
+  #flameBtn:active{transform:translateX(-50%) scale(.94)}
   #flameBtn.hidden{display:none}
+  @keyframes freedompulse{
+    0%{box-shadow:0 0 8px 2px rgba(232,56,79,.95),inset 0 0 18px rgba(232,56,79,.5);border-color:#e8384f}
+    33%{box-shadow:0 0 8px 2px rgba(255,255,255,.95),inset 0 0 18px rgba(255,255,255,.5);border-color:#f2efe6}
+    66%{box-shadow:0 0 8px 2px rgba(77,123,255,.95),inset 0 0 18px rgba(77,123,255,.5);border-color:#4d7bff}
+  }
+  /* the torch sits on top of the right-hand firepower column */
+  #torchBtn{right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 294px);width:58px;height:58px;
+    font-size:24px;border-color:#ff8c3a;animation:flamepulse .9s ease-in-out infinite}
+  #torchBtn.hidden{display:none}
+  #torchBtn.held{background:rgba(180,60,10,.6);border-color:#ffd166}
+  #torchBtn.dry{opacity:.4;animation:none}
+  /* fuel reads as a ring segment under the glyph rather than an ammo pip —
+     it is a tank, not a magazine */
+  #torchFuelEl{position:absolute;left:6px;right:6px;bottom:6px;height:3px;border-radius:2px;
+    background:rgba(255,140,58,.25);overflow:hidden}
+  #torchFuelEl i{display:block;height:100%;background:#ff8c3a;transition:width .08s linear}
   @keyframes flamepulse{0%,100%{box-shadow:0 0 6px rgba(255,140,58,.4)}50%{box-shadow:0 0 22px rgba(255,140,58,.9)}}
   #bellBtn{left:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 84px);width:58px;height:58px;font-size:24px;
     font-variant-numeric:tabular-nums}
@@ -81,6 +109,9 @@
     color:#0b0d08;background:var(--brass);border-radius:9px;padding:0 5px;line-height:16px}
   @keyframes riflepulse{0%,100%{box-shadow:0 0 5px rgba(201,169,97,.35)}50%{box-shadow:0 0 18px rgba(201,169,97,.85)}}
   #bellBtn.cooling{opacity:.35;font-size:20px;font-family:Georgia,serif;color:var(--brass)}
+  /* BETA13 — arsenal held but not spendable: the road is not flying the
+     colors. Visible, so you can see what you are sitting on, but plainly off. */
+  .roundBtn.locked{opacity:.3;animation:none;filter:grayscale(.7)}
   /* ALTBETA8 — the mortar joins the right-hand firepower column above the
      plow. 52px so the stack still clears the notch on a small handset.
      BETA12 — the comet vacated the 84px slot, which is the best real estate
@@ -225,7 +256,8 @@
 <label id="hapticLbl" for="hapticSwitch" aria-hidden="true" style="position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;pointer-events:none"><input type="checkbox" switch id="hapticSwitch" tabindex="-1"></label>
 <button id="muteBtn" class="roundBtn" aria-label="Toggle music">🎵</button>
 <button id="hornBtn" class="roundBtn" aria-label="Sound the horn">🎺</button>
-<button id="flameBtn" class="roundBtn hidden" aria-label="Consume the highway">🔥</button>
+<button id="flameBtn" class="hidden" aria-label="Trigger Freedom Mode">Freedom</button>
+<button id="torchBtn" class="roundBtn hidden" aria-label="Hold to fire the flamethrower">🔥<span id="torchFuelEl"><i style="width:100%"></i></span></button>
 <button id="bellBtn" class="roundBtn" aria-label="Toll the Liberty Bell">🔔</button>
 <button id="plowBtn" class="roundBtn hidden" aria-label="Drop the plow blade" style="position:fixed"><svg viewBox="0 0 30 22" width="30" height="22" aria-hidden="true"><path d="M2 15 Q6 4 15 4 Q24 4 28 15 L28 19 L2 19 Z" fill="#e0a13a"/><path d="M2 15 Q6 4 15 4 Q24 4 28 15" fill="none" stroke="#a8752a" stroke-width="1.4"/><rect x="2" y="17.4" width="26" height="2.6" fill="#8d8f92"/><path d="M11 6 L11 18" stroke="#a8752a" stroke-width="1"/><path d="M19 6 L19 18" stroke="#a8752a" stroke-width="1"/><rect x="13.4" y="0.6" width="3.2" height="4.2" rx="1" fill="#6f7378"/></svg><span class="ammo" id="plowAmmoEl">0</span></button>
 <button id="bombBtn" class="roundBtn hidden" aria-label="Call an air strike" style="position:fixed"><svg viewBox="0 0 34 22" width="32" height="22" aria-hidden="true"><path d="M17 2 L31 18 L24 18 L20 14 L17 16 L14 14 L10 18 L3 18 Z" fill="#4a525c"/><path d="M17 4 L28 16.5 L23 16.5 L19.5 13 L17 14.5 L14.5 13 L11 16.5 L6 16.5 Z" fill="#6a7380"/><path d="M17 6 L22 12.5 L17 14 L12 12.5 Z" fill="#2e343c"/><circle cx="17" cy="9.5" r="1.3" fill="#8fb8ff"/></svg><span class="ammo" id="bombAmmoEl">0</span></button>
@@ -359,8 +391,14 @@
           <div class="mdesc">Three B-2s and one favor owed. Two full screens of carpet policy. Friendly to you; a matter of record for everything else on the pavement.</div></div>
         <div class="mrow"><div class="mterm">🎆 The Firework Mortar <i>three in the tube at the flag</i></div>
           <div class="mdesc">A tube, a baseplate, and a shell with a fuse cut for mid-range. It opens where you can still see it — and then the sky keeps working: a dozen live echoes walk the road for four full seconds, each one clearing its own patch of herd, traffic, cryptid, gator and bird. Five shells maximum, and it reloads off the streak, off the score, off the crates, off Overdrive, and off the Patriarch's crown. You are meant to be firing this constantly. There is no longer anything else that solves the whole screen, so solve it with this.</div></div>
+        <div class="mrow"><div class="mterm">Standing Kit vs. Arsenal <i>read this one</i></div>
+          <div class="mdesc">The rifle, the blade and the torch are STANDING KIT: earned on the ordinary road and spent whenever you like. The tube, the bottle, the strike and the bell are ARSENAL, and the arsenal only answers to the colors — it is earned under Star-Spangled Overdrive and it only goes off under Star-Spangled Overdrive. You may carry a shell out of the flag and into the dark; it simply will not light until the flag comes back. The department considers this a matter of appropriations.</div></div>
+        <div class="mrow"><div class="mterm">🔥 The Flamethrower <i>500 deer, lifetime</i></div>
+          <div class="mdesc">Five hundred on the ledger and they issue you the torch. Hold it and a cone of fire stands off the nose, roasting deer, traffic, hounds, crates and freight in a widening wedge; let go and the tank refills. It is the only heavy thing on this list that does not want the colors flying, which makes it the answer to the ordinary road. Fuel is the only limit and it is a short one — hold it in bursts or you will be pointing an empty nozzle at a moose.</div></div>
+        <div class="mrow"><div class="mterm">FREEDOM MODE <i>1500 deer, lifetime · Overdrive only</i></div>
+          <div class="mdesc">Fifteen hundred on the ledger to have it at all, and then ten consecutive kills inside a single Overdrive to light it. The banner comes up in the middle of the screen and you have until the colors drop to press it. What follows is not a weapon, it is a verdict: a wall of fire goes up the road, the van becomes a red-white-and-blue fireball doing three times the pace, and the country is run out from under it. Nothing on the pavement survives the trip and nothing on the pavement can touch you during it. Once per Overdrive. Unspent, it goes out with the flag.</div></div>
         <div class="mrow"><div class="mterm">Desk Reference <i>keyboard</i></div>
-          <div class="mdesc">Arrows or A/D steer · ↓/S brake, held to a dead stop · SPACE horn · B bell · R rifle · V plow · G bottle · X air support · C mortar · P pause. The van accelerates on its own. Issued for motorists whose van is a desk.</div></div>
+          <div class="mdesc">Arrows or A/D steer · ↓/S brake, held to a dead stop · SPACE horn · B bell · R rifle · V plow · G bottle · X air support · C mortar · F torch, held · Z freedom · P pause. The van accelerates on its own. Issued for motorists whose van is a desk.</div></div>
       </div>
 
       <div class="mpage" id="mp-wild">
@@ -885,6 +923,26 @@ let engineCd = 0, engineSeen = false;
 const rams = [], serpents = [];
 let ramCd = 0, ramSeen = false, serpCd = 0, serpSeen = false;
 let plowT = 0, plowAmmo = 0, plowShown = -1, plowSeen = false, nextPlowAt = 28;
+/* BETA13 — the blade is a joke about municipal overreach now. It was 30px
+   either side of a 22px van; it is 78, which is most of a lane, and every
+   contact test that reads the blade reads this instead of van.hw. */
+const PLOW_HW = 78;
+/* === BETA13 — WHAT THE ORDINARY ROAD IS ALLOWED ===
+   The rifle, the blade and the torch are standing kit: earned and spent
+   whenever. The tube, the bottle, the strike and the bell are arsenal, and
+   the arsenal only answers to the colors. You can hold it outside Overdrive
+   — a shell off the roadside still banks — but it does not go off. */
+function arsenalLive(what){
+  if (isSuper()) return true;
+  popup(van.x, van.y - 62, 'NOT UNTIL THE COLORS FLY', 14, false);
+  if (Math.random() < 0.5) popup(van.x, van.y - 84, what.toUpperCase() + ' WAITS.', 13, false);
+  return false;
+}
+const plowSpan = () => (plowT > 0 ? PLOW_HW : 0);
+/* x-overlap against the blade OR the bumper, whichever is wider */
+function vanSweep(x, halfW){
+  return Math.abs(x - van.x) < Math.max(van.hw, plowSpan()) + halfW;
+}
 let gator = null, thunder = null;
 let gatorCd = 14, thunderCd = 30;
 let lure = null;
@@ -962,6 +1020,26 @@ const THROTTLE_MAX = 1.22;         /* natural highway without Overdrive */
 const THROTTLE_ACCEL = 0.16;       /* slow climb per second toward max */
 const BRAKE_RATE = 0.85;           /* throttle lost per second while braking */
 let fullStopShown = false;
+/* BETA13 — Overdrive used to hand the throttle back wide open. You came out
+   of nine seconds of 1.5x already pinned at THROTTLE_MAX, so the ordinary
+   road afterwards ran faster than the road before it and never came down.
+   Overdrive now lets go of the wheel: the van coasts back to a cruise and
+   climbs from there like everything else. */
+const THROTTLE_SETTLE = 0.60;
+
+/* === BETA13 — THE TWO LONG UNLOCKS ===
+   Both ride ledger.lifetime, not the run. They are career equipment: you do
+   not earn the torch in a good drive, you earn it across a season. */
+const TORCH_LIFETIME = 500, FREEDOM_LIFETIME = 1500;
+/* the torch: hold it down and it burns fuel; let go and the tank refills.
+   Self-limiting, so it never becomes a button you simply hold forever. */
+const TORCH_TANK = 3.2, TORCH_REFILL = 0.42, TORCH_REACH = 250, TORCH_SPREAD = 0.40;
+let torchHeld = false, torchFuel = TORCH_TANK, torchSeen = false, torchT = 0;
+/* FREEDOM MODE: armed by consecutive kills inside Overdrive, spent once. */
+const FREEDOM_KILLS = 10;
+/* how long the fireball runs, and how much road it eats while it does */
+const FREEDOM_BLAZE = 2.6, FREEDOM_SPEED = 3.0;
+let poKills = 0, freedomArmed = false, freedomSeen = false, freedomWash = 0;
 /* BETA10 — return fire. Some of the traffic is armed; these are their rounds. */
 const hostShots = [];
 let armedSeen = false;
@@ -2840,6 +2918,7 @@ const bombAmmoEl = document.getElementById('bombAmmoEl');
 function updateBombBtn(){
   const show = mode === 'play' && bombAmmo > 0 && !bombRun;
   bombBtn.classList.toggle('hidden', !show);
+  bombBtn.classList.toggle('locked', show && !isSuper());
   if (show && bombAmmo !== bombShown){ bombShown = bombAmmo; bombAmmoEl.textContent = bombAmmo; }
 }
 function awardBomb(){
@@ -2872,6 +2951,7 @@ function firePlow(){
 }
 function fireBombRun(){
   if (mode !== 'play' || paused || bombAmmo <= 0 || bombRun || flame.phase) return;
+  if (!arsenalLive('the strike')) return;
   bombAmmo--;
   bombShown = -1;
   bombRun = { t: 0, dist: 0, target: H * BOMB_RUN_LEN, drop: 0, wave: 0 };
@@ -2901,6 +2981,7 @@ const mortarAmmoEl = document.getElementById('mortarAmmoEl');
 function updateMortarBtn(){
   const show = mode === 'play' && mortarAmmo > 0;
   mortarBtn.classList.toggle('hidden', !show);
+  mortarBtn.classList.toggle('locked', show && !isSuper());
   if (show && mortarAmmo !== mortarShown){ mortarShown = mortarAmmo; mortarAmmoEl.textContent = mortarAmmo; }
 }
 function awardMortar(){
@@ -2915,6 +2996,7 @@ function awardMortar(){
 }
 function fireMortar(){
   if (mode !== 'play' || paused || mortarAmmo <= 0 || flame.phase) return;
+  if (!arsenalLive('the tube')) return;
   if (shells.length >= 5) return;
   mortarAmmo--; mortarShown = -1;
   updateMortarBtn();
@@ -3045,6 +3127,7 @@ function mortarBurst(x, y){
     const cdx = c.x - x, cdy = (c.y - y) * 1.15;
     if (cdx * cdx + cdy * cdy < r2) explodeCar(i, false);
   }
+  blastRigs(x, y, MORTAR_R);
   popupMute--;
   /* PEDAL TEST v3 — an airburst over the treeline is very much his problem */
   for (let i = squatches.length - 1; i >= 0; i--){
@@ -3122,6 +3205,7 @@ function echoStrike(x, y, sc){
     const b = barrels[i];
     if (Math.abs(b.x - x) < R && Math.abs(b.y - y) < R) smashBarrel(i, false);
   }
+  blastRigs(x, y, R);
   popupMute--;
   for (const sq of squatches){
     if (sq.state === 'retreat') continue;
@@ -3139,6 +3223,7 @@ const sprayAmmoEl = document.getElementById('sprayAmmoEl');
 function updateSprayBtn(){
   const show = mode === 'play' && sprayAmmo > 0 && !lure;
   sprayBtn.classList.toggle('hidden', !show);
+  sprayBtn.classList.toggle('locked', show && !isSuper());
   if (show && sprayAmmo !== sprayShown){ sprayShown = sprayAmmo; sprayAmmoEl.textContent = sprayAmmo; }
 }
 function awardSpray(){
@@ -3153,6 +3238,7 @@ function awardSpray(){
 }
 function fireSpray(){
   if (mode !== 'play' || paused || sprayAmmo <= 0 || lure || flame.phase) return;
+  if (!arsenalLive('the bottle')) return;
   sprayAmmo--;
   sprayShown = -1;
   lure = { x: van.x, y: H * 0.34, t: SPRAY_TIME, acc: 0, sent: 0, puff: 0.6 };
@@ -3165,23 +3251,184 @@ function fireSpray(){
 sprayBtn.addEventListener('click', fireSpray);
 
 const flameBtn = document.getElementById('flameBtn');
-/* === BETA12 — THE COMET IS RETIRED ===
-   The fireworks do that work now. Manifest Combustion was the only thing in
-   the fleet that solved the whole screen at once, and having two of those
-   made the mortar decorative. So: the button never shows, the trigger is a
-   dead stop, and no path anywhere grants fuel.
+/* === BETA13 — FREEDOM MODE ===
+   BETA12 retired the comet because a second solve-the-whole-screen button made
+   the mortar decorative. The machinery was left standing — `flame.phase` is
+   read as a guard in roughly fifty places, and flameUpdate() still services
+   firePatches — so this is a re-arming, not a rebuild.
 
-   Deliberately NOT deleted: `flame.phase` is read as a guard in roughly fifty
-   places across update() and the draw pass. With nothing ever setting it, it
-   stays null forever and every one of those guards resolves the safe way on
-   its own. Ripping them out would be fifty chances to break a build that
-   currently runs clean. flameUpdate() also still services firePatches, which
-   meteors and airbursts lay down, so it keeps its call site. */
+   What is different is what it costs. The comet was fuel you found on the
+   roadside. FREEDOM MODE cannot be found, bought or saved for: you need 1500
+   deer on the lifetime ledger to have it at all, and then TEN consecutive
+   kills inside a single Star-Spangled Overdrive to arm it. It is spent the
+   moment Overdrive ends, armed or not. */
+const freedomUnlocked = () => ledger.lifetime >= FREEDOM_LIFETIME;
 function updateFlameBtn(){
-  flameStock = 0;
-  flameBtn.classList.add('hidden');
+  const show = mode === 'play' && !paused && freedomArmed && isSuper() && !flame.phase;
+  flameBtn.classList.toggle('hidden', !show);
 }
-function startFlame(){ return; }
+function armFreedom(){
+  if (freedomArmed || !freedomUnlocked() || !isSuper() || flame.phase) return;
+  freedomArmed = true;
+  updateFlameBtn();
+  sndFanfare();
+  buzz([60, 40, 60, 40, 60, 40, 220]);
+  skyFlash = 1;
+  toast(freedomSeen ? 'FREEDOM MODE. SPEND IT.'
+                    : 'TEN IN A ROW UNDER THE COLORS. FREEDOM MODE IS LIT — TAKE THE COUNTRY.', true);
+  freedomSeen = true;
+}
+function startFlame(){
+  if (mode !== 'play' || paused || flame.phase || !freedomArmed) return;
+  freedomArmed = false;
+  flame.phase = 'launch';
+  flame.y = van.y - 10;
+  flame.lastPatch = flame.y;
+  flame.t = 0;
+  flame.kills = flame.hounds = flame.moose = flame.pies = flame.cans = 0;
+  freedomWash = 1;
+  quipMute = true;                 /* the run does not narrate itself mid-blaze */
+  sfxScale = 0.55;
+  van.inv = Math.max(van.inv, 3.5);
+  updateFlameBtn();
+  sndFanfare(); sndRev(); sndAnthem();
+  skyFlash = 1;
+  shake = Math.max(shake, 24);
+  buzz([90, 40, 90, 40, 90, 40, 300]);
+  toast('FREEDOM MODE. GOD BLESS THE ROAD AHEAD.', true);
+}
+flameBtn.addEventListener('click', startFlame);
+
+/* === BETA13 — THE TORCH ===
+   Five hundred deer on the lifetime ledger and the Department issues you a
+   cone of fire. Unlike everything else in the arsenal it does NOT want the
+   colors flying — it is standing kit, alongside the rifle and the blade, and
+   it is the answer to the complaint that the ordinary road had no answer.
+
+   It is held, not fired. Fuel drains while the trigger is down and refills
+   while it is up, so the ceiling is not ammunition but how long you dare keep
+   your thumb on it with traffic coming. Everything in the cone roasts;
+   nothing in the cone can reach the van. */
+const torchBtn = document.getElementById('torchBtn');
+const torchFuelBar = document.querySelector('#torchFuelEl i');
+const torchUnlocked = () => ledger.lifetime >= TORCH_LIFETIME;
+const torchBurning = () => torchHeld && torchFuel > 0 && !flame.phase && mode === 'play' && !paused;
+let torchCook = 0, torchLay = 0;
+/* a low roar with a hiss on top — held, so it is retriggered on a slow tick
+   rather than looped, which keeps it out of the way of the music bed */
+function sndFlame(){
+  tone('sawtooth', 92, 62, 0.5, 0.055);
+  burst(0.34, 0.05);
+}
+function updateTorchBtn(){
+  const show = mode === 'play' && torchUnlocked();
+  torchBtn.classList.toggle('hidden', !show);
+  if (!show) return;
+  torchBtn.classList.toggle('held', torchHeld && torchFuel > 0);
+  torchBtn.classList.toggle('dry', torchFuel <= 0.05);
+  if (torchFuelBar) torchFuelBar.style.width = Math.round((torchFuel / TORCH_TANK) * 100) + '%';
+}
+function torchOn(){
+  if (mode !== 'play' || paused || flame.phase || !torchUnlocked()) return;
+  torchHeld = true;
+  if (torchFuel > 0.05 && !torchSeen){
+    torchSeen = true;
+    toast('FLAMETHROWER. HOLD IT DOWN. LET IT BREATHE BETWEEN BURSTS.');
+  }
+  if (torchFuel > 0.05) sndFlame();
+}
+function torchOff(){ torchHeld = false; updateTorchBtn(); }
+torchBtn.addEventListener('pointerdown', e => { e.preventDefault(); torchOn(); });
+torchBtn.addEventListener('pointerup', torchOff);
+torchBtn.addEventListener('pointercancel', torchOff);
+torchBtn.addEventListener('pointerleave', torchOff);
+/* the cone: everything inside it is already on fire */
+function torchStep(dt){
+  if (torchCook > 0) torchCook -= dt;
+  if (torchLay > 0) torchLay -= dt;
+  if (torchBurning()){
+    torchFuel = Math.max(0, torchFuel - dt);
+    torchT += dt;
+    /* the roar is retriggered rather than looped */
+    if (torchT % 0.36 < dt) sndFlame();
+    if (torchFuel === 0){
+      torchHeld = false;
+      popup(van.x, van.y - 62, 'DRY.', 15, false);
+    }
+  } else {
+    torchT = 0;
+    if (torchFuel < TORCH_TANK) torchFuel = Math.min(TORCH_TANK, torchFuel + dt * TORCH_REFILL);
+  }
+  updateTorchBtn();
+  if (!torchBurning()) return;
+  const noseY = van.y - van.hh;
+  /* half-width of the cone at a given distance ahead of the nose */
+  const spanAt = (dy) => 16 + dy * TORCH_SPREAD;
+  const inCone = (x, y, pad) => {
+    const dy = noseY - y;
+    if (dy < -10 || dy > TORCH_REACH) return false;
+    return Math.abs(x - van.x) < spanAt(Math.max(0, dy)) + (pad || 0);
+  };
+  /* embers, so the cone reads as live even against a bright biome */
+  if (canSpawnParts(3)) for (let k = 0; k < 3; k++){
+    const dy = Math.random() * TORCH_REACH;
+    parts.push({ type:'dot', col: Math.random() < 0.5 ? '#ff8c3a' : '#ffd166',
+      x: van.x + (Math.random() - .5) * 2 * spanAt(dy), y: noseY - dy,
+      vx: (Math.random() - .5) * 60, vy: -180 - Math.random() * 160,
+      rot: 0, vr: 0, ttl: .28, life: .28, size: 1.6 + Math.random() * 2.4 });
+  }
+  popupMute++;
+  for (let i = deer.length - 1; i >= 0; i--){
+    const d = deer[i];
+    if (d.state !== 'walk' || d.kind === 'ghost') continue;
+    if (!inCone(d.x, d.y, 14)) continue;
+    parts.push({ type:'emoji', txt:'🔥', x:d.x, y:d.y, vx:(Math.random()-.5)*70,
+      vy:-90, rot:0, vr:2, ttl:.4, life:.4, size:20 });
+    killDeer(d, d.x + 30 * (Math.random() < .5 ? 1 : -1), true, 1.4);
+  }
+  popupMute--;
+  /* traffic cooks slower than venison — one car per tenth of a second, so a
+     long hold walks up a queue instead of vaporising the whole screen */
+  if (torchCook <= 0){
+    for (let i = cars.length - 1; i >= 0; i--){
+      const c = cars[i];
+      if (!inCone(c.x, c.y, c.hw)) continue;
+      fireRing(c.x, c.y);
+      explodeCar(i, false);
+      torchCook = 0.1;
+      break;
+    }
+    for (let i = rigs.length - 1; i >= 0; i--){
+      const rg = rigs[i];
+      if (inCone(rg.x, rg.y, rg.w * 0.5)){ killRig(i, 'COOKED.'); torchCook = 0.14; break; }
+    }
+  }
+  for (let i = crates.length - 1; i >= 0; i--){
+    const c = crates[i];
+    if (inCone(c.x, c.y, 16)){ crates.splice(i, 1); planks(c.x, c.y); fireRing(c.x, c.y); }
+  }
+  for (let i = wolves.length - 1; i >= 0; i--){
+    const w = wolves[i];
+    if (inCone(w.x, w.y, 18)){ wolves.splice(i, 1); boom(w.x, w.y, 30); }
+  }
+  for (const m of mooses){
+    if (m.hitCd > 0) continue;
+    if (inCone(m.x, m.y, 26)){ m.hitCd = 0.55; hitMoose(m, 1, van.x); }
+  }
+  for (const sq of squatches){
+    if (sq.state === 'retreat' || sq.hitCd > 0) continue;
+    if (inCone(sq.x, sq.y, 30)){ sq.hitCd = 0.6; hitSquatch(sq, 1); }
+  }
+  if (gator && gator.hitCd !== 1 && inCone(gator.x, gator.y, 30)){ hitGator(1, van.x); gator.hitCd = 1; }
+  /* fire on the road behind the cone, same patches the fireball lays down */
+  if (torchLay <= 0){
+    torchLay = 0.05;
+    const dy = Math.random() * TORCH_REACH;
+    firePatches.push({ x: van.x + (Math.random() - .5) * 2 * spanAt(dy), y: noseY - dy,
+      ttl: 0.9, life: 0.9, seed: Math.random() * 6.28 });
+    while (firePatches.length > 150) firePatches.shift();
+  }
+}
 
 const bellBtn = document.getElementById('bellBtn');
 /* A cute one: a music-box tumble, a soft slab of rumble under it, and a
@@ -3262,6 +3509,12 @@ const BELL_CALLS = {
 };
 function fireBell(){
   if (mode !== 'play' || paused || flame.phase) return;
+  /* BETA13 — the bell is arsenal, not standing kit. The country only answers
+     while the road is flying the colors. */
+  if (!isSuper()){
+    popup(van.x, van.y - 62, 'NOT UNTIL THE COLORS FLY', 14, false);
+    return;
+  }
   if (bellUses <= 0 || bellCd > 0){
     popup(van.x, van.y - 62, 'SPENT UNTIL THE NEXT COUNTRY', 14, false);
     return;
@@ -3287,6 +3540,7 @@ function fireBell(){
 
   const b = (biomeMix < 0.5 ? curBiome() : nxtBiome()).id;
   const call = BELL_CALLS[b];
+  /* handled by the Overdrive gate in the caller */
   if (call){
     call.go();
     if (call.say) setTimeout(() => { if (mode === 'play') popup(van.x, van.y - 96, call.say, 15, true); }, 220);
@@ -3470,6 +3724,13 @@ window.addEventListener('keydown', e => {
     pedalBrake = true;
     if (brakeBtnEl) brakeBtnEl.classList.add('held');
   }
+  /* BETA13 — the torch is a held control, so it gets a held key */
+  if (e.key === 'f' || e.key === 'F'){ if (!e.repeat) torchOn(); }
+  /* z, because g is the bottle and every other letter on the left hand is spoken for */
+  if (e.key === 'z' || e.key === 'Z'){ if (!e.repeat) startFlame(); }
+});
+window.addEventListener('keyup', e => {
+  if (e.key === 'f' || e.key === 'F') torchOff();
 });
 
 /* ================= UI ================= */
@@ -4060,6 +4321,35 @@ function spawnRig(){
    covers both so the combined rate stays honest: ranger 1 in ~22 ordinary
    spawns, logger 1 in ~13. */
 const RANGER_ODDS = 0.045, LOGGER_ODDS = 0.077;
+/* === BETA13 — THE RIG IS NOT EXEMPT ===
+   The oncoming rig used to be pure hazard: it could only ever be dodged, and
+   every weapon in the fleet passed straight through it. That made it the one
+   thing on the road you could not answer, which is not the game this is. It
+   dies to all of it now — rifle, airburst, strike, blade, torch, avalanche,
+   Overdrive shoulder and the fireball. One shared exit so every route reads
+   the same and nothing gets a half-dead rig. */
+function killRig(i, line){
+  const rg = rigs[i];
+  if (!rg) return;
+  rigs.splice(i, 1);
+  boom(rg.x, rg.y, 96);
+  fireRing(rg.x, rg.y);
+  fireRing(rg.x, rg.y - 46);
+  debris(rg.x, rg.y, '#8a1c0a');
+  sndSlam(); sndRigHorn();
+  shake = Math.max(shake, 26);
+  buzz([80, 40, 120]);
+  triggerFreedom(2);
+  popup(rg.x, rg.y - 40, line || RIG_KILL_LINES[(Math.random() * RIG_KILL_LINES.length) | 0], 18, true);
+}
+const RIG_KILL_LINES = ['JACKKNIFED.', 'WRONG WAY, WRONG DAY.', 'REROUTED.', 'THAT ONE YIELDED.'];
+/* every blast in the game funnels its rig clause through here */
+function blastRigs(x, y, R){
+  for (let i = rigs.length - 1; i >= 0; i--){
+    const rg = rigs[i];
+    if (Math.abs(rg.x - x) < R + rg.w * 0.5 && Math.abs(rg.y - y) < R + rg.h * 0.5) killRig(i);
+  }
+}
 function pickCarType(){
   if (window.__forceCarType != null){ const t = window.__forceCarType; window.__forceCarType = null; return t; }
   /* the forest keeps a logging outfit and a parks truck on this road, the way
@@ -4350,6 +4640,12 @@ function killDeer(d, hitterX, assisted, force){
     if (!isSuper()){
       charge += d.gold ? 4 : d.kind === 'ghost' ? 3 : d.kind === 'jack' ? 3 : d.kind === 'buck' ? 2 : 1;
       if (charge >= SUPER_NEED) activateSuper();
+    } else {
+      /* BETA13 — the count that lights FREEDOM MODE. Kills taken under the
+         colors, consecutively: the combo clock is what defines "consecutive",
+         so letting the road go quiet for two seconds costs you the run-up. */
+      poKills++;
+      if (poKills >= FREEDOM_KILLS) armFreedom();
     }
     updateMeter();
     streak++;
@@ -4377,10 +4673,17 @@ function killDeer(d, hitterX, assisted, force){
     }
     /* BETA10 — easy plow, rack of 4 */
     if (streak >= nextPlowAt && plowAmmo < 4){ awardPlow(); nextPlowAt += 14; }
-    /* ALTBETA8 — the mortar rides the same rails as the bottle: whichever of
-       streak or score gets there first, and it re-arms on both.
-       BETA12 — both steps cut hard; the tube is the new finale. */
-    if (mortarAmmo < MORTAR_MAX && (streak >= nextMortarAt || score >= nextMortarScore)){
+    /* === BETA13 — THE ARSENAL IS OVERDRIVE-ONLY ===
+       The rifle and the blade are the standing kit: they arrive on streak and
+       score like they always did, in or out of the colors. Everything heavier
+       — the tube, the bottle, the strike — is now earned exclusively under
+       Star-Spangled Overdrive. The thresholds are unchanged; what changed is
+       that the road has to be flying the flag when you cross them.
+
+       Ammo already in hand survives the end of Overdrive. Earning it is the
+       thing that is gated, not spending it — a shell awarded in the last
+       second of the colors would otherwise be a shell awarded to nobody. */
+    if (isSuper() && mortarAmmo < MORTAR_MAX && (streak >= nextMortarAt || score >= nextMortarScore)){
       awardMortar();
       if (streak >= nextMortarAt) nextMortarAt += MORTAR_STREAK_STEP;
       while (score >= nextMortarScore) nextMortarScore += MORTAR_SCORE_STEP;
@@ -4402,11 +4705,11 @@ function killDeer(d, hitterX, assisted, force){
         (bnow === 'farmland' || bnow === 'bayou')){
       spawnDuster(); dusterCd = 17;
     }
-    if (spraySeen && bombAmmo < 2 && score >= nextBombScore){
+    if (isSuper() && spraySeen && bombAmmo < 2 && score >= nextBombScore){
       awardBomb();
       nextBombScore += 260;
     }
-    if (sprayAmmo < 3 && (streak >= nextSprayAt || score >= nextSprayScore)){
+    if (isSuper() && sprayAmmo < 3 && (streak >= nextSprayAt || score >= nextSprayScore)){
       awardSpray();
       if (streak >= nextSprayAt) nextSprayAt += 45;
       while (score >= nextSprayScore) nextSprayScore += 200;
@@ -4529,6 +4832,7 @@ function meteorImpact(x, y){
 }
 function activateSuper(){
   superT = SUPER_TIME;
+  poKills = 0; freedomArmed = false;
   buzz([40, 40, 40, 40, 40, 40, 160]);
   meterFill.classList.add('super');
   updateMeter();
@@ -4551,6 +4855,17 @@ function endSuper(){
   meterFill.classList.remove('super');
   updateMeter();
   musicSet('somber');
+  /* BETA13 — hand the wheel back at a cruise, not wide open. Overdrive spends
+     nine seconds pushing the throttle to the ceiling; without this the van
+     leaves the colors still pinned there and the ordinary road afterwards
+     runs faster than the ordinary road before it, permanently, from the first
+     Overdrive of the run onward. */
+  if (!pedalBrake && throttle > THROTTLE_SETTLE){
+    throttle = THROTTLE_SETTLE;
+    popup(van.x, van.y - 58, 'EASING OFF.', 14, false);
+  }
+  poKills = 0;
+  freedomArmed = false;
   updateFlameBtn();
 }
 function startRun(){
@@ -4600,6 +4915,11 @@ function startRun(){
   charmT = 0; hornFlash = 0; charmSeen = false;
   freedomGlow = 0;
   flame.phase = null; flameStock = 0; quipMute = false; heavenPending = false; sfxScale = 1;
+  /* BETA13 — the two long unlocks reset their per-run state, not their
+     eligibility. The ledger is what says whether you have them at all. */
+  poKills = 0; freedomArmed = false; freedomWash = 0;
+  torchHeld = false; torchFuel = TORCH_TANK; torchT = 0; torchCook = 0; torchLay = 0;
+  updateFlameBtn(); updateTorchBtn();
   updateFlameBtn();
   deerT = 0.4; carT = 2.4; crateT = 13; meteorT = 0; mooseT = 24; shake = 0; hitStop = 0; lastCause = '';
   slicks.length = 0; rigs.length = 0; slickT = 8; rigT = 20; van.skid = 0;
@@ -4655,7 +4975,10 @@ function endRun(){
   if (dv) dv.classList.remove('on');
   musicStop(); sndToll();
   flame.phase = null; quipMute = false; sfxScale = 1;
+  freedomArmed = false; freedomWash = 0; poKills = 0;
+  torchHeld = false;
   updateFlameBtn();
+  torchBtn.classList.add('hidden');
   rifleBtn.classList.add('hidden');
   sprayBtn.classList.add('hidden');
   bombBtn.classList.add('hidden');
@@ -4769,11 +5092,43 @@ function flameUpdate(dt, speed){
       damageBoss(van.x);
     }
     shake = Math.max(shake, 11);
-    if (F.y <= -110){ F.phase = 'blaze'; F.t = 0.55; }
+    if (F.y <= -110){ F.phase = 'blaze'; F.t = FREEDOM_BLAZE; }
 
   } else if (F.phase === 'blaze'){
+    /* BETA13 — the blaze used to be half a second of screen shake while the
+       wall sat offscreen. It is the whole point of the mode now: the van is a
+       red-white-and-blue fireball doing three times the road, and it runs the
+       country out. Everything that enters the road during it is already on
+       fire by the time it is drawn. */
     F.t -= dt;
-    shake = Math.max(shake, 6);
+    shake = Math.max(shake, 9);
+    /* the road ahead is on fire the whole way, not just where the wall was */
+    F.lastPatch -= speed * dt;
+    while (F.lastPatch < -40){
+      F.lastPatch += 52;
+      const n = QUAL > 0.6 ? 2 : 1;
+      for (let k = 0; k < n; k++){
+        firePatches.push({ x: road.left + 14 + Math.random() * (road.right - road.left - 28),
+          y: -20 + Math.random() * 40, ttl: 1.5, life: 1.5, seed: Math.random() * 6.28 });
+      }
+      while (firePatches.length > 150) firePatches.shift();
+    }
+    popupMute++;
+    for (let i = deer.length - 1; i >= 0; i--){
+      const d = deer[i];
+      if (d.state !== 'walk' || d.kind === 'ghost') continue;
+      F.kills++;
+      parts.push({ type:'emoji', txt:'🔥', x:d.x, y:d.y, vx:(Math.random()-.5)*60,
+        vy:-80, rot:0, vr:2, ttl:.4, life:.4, size:20 });
+      killDeer(d, d.x + 40 * (Math.random() < .5 ? 1 : -1), true);
+    }
+    popupMute--;
+    for (let i = cars.length - 1; i >= 0; i--) explodeCar(i, false);
+    for (let i = rigs.length - 1; i >= 0; i--) killRig(i, 'FREEDOM.');
+    for (let i = wolves.length - 1; i >= 0; i--){
+      const w = wolves[i];
+      wolves.splice(i, 1); boom(w.x, w.y, 30); F.hounds++;
+    }
     if (F.t <= 0){ F.phase = 'return'; F.ry = -130; }
 
   } else if (F.phase === 'return'){
@@ -4788,7 +5143,8 @@ function flameUpdate(dt, speed){
       fireRing(van.x, van.y);
       van.inv = Math.max(van.inv, 1.0);
       musicSet('metal');
-      let msg = 'SCORCHED EARTH. GOD BLESS. ' + F.kills + ' DEER.';
+      freedomWash = 0;
+      let msg = 'FREEDOM MODE OVER. GOD BLESS. ' + F.kills + ' DEER.';
       if (F.moose) msg += ' EVEN THE MOOSE.';
       if (F.hounds) msg += ' THE HOUNDS KNEW THE RISKS.';
       if (F.pies) msg += ' A PIE, MARTYRED.';
@@ -4842,7 +5198,11 @@ function update(dt){
      1.5x lands at ~530 — i.e. the old top speed is now exclusively what the
      Star-Spangled Overdrive feels like. */
   const baseSpeed = Math.min(355, 178 + elapsed * 3.2);
-  const speed = baseSpeed * throttle * (superOn ? 1.5 : 1);
+  /* BETA13 — the fireball runs the road out at three times the pace. Only the
+     blaze leg gets it; the launch is the wall going up the screen and the
+     return is the van catching back up to itself. */
+  const speed = baseSpeed * throttle * (superOn ? 1.5 : 1) *
+                (flame.phase === 'blaze' ? FREEDOM_SPEED : 1);
   /* the pileup readout */
   {
     let n = 0;
@@ -4899,6 +5259,11 @@ function update(dt){
     if (superT <= 0) endSuper();
   }
   if (flame.phase || firePatches.length) flameUpdate(dt, speed);
+  torchStep(dt);
+  updateFlameBtn();
+  /* the red-white-and-blue wash. Runs the whole fireball, decays after. */
+  if (flame.phase) freedomWash = 1;
+  else if (freedomWash > 0) freedomWash = Math.max(0, freedomWash - dt * 2.2);
 
   if (hornCd > 0){
     hornCd -= dt;
@@ -5005,7 +5370,7 @@ function update(dt){
     }
   }
 
-  if (comboClock > 0){ comboClock -= dt; if (comboClock <= 0){ combo = 0; } }
+  if (comboClock > 0){ comboClock -= dt; if (comboClock <= 0){ combo = 0; poKills = 0; } }
 
   /* spawns */
   if (!flame.phase){
@@ -5271,12 +5636,18 @@ function update(dt){
         debris(rg.x, rg.y, '#8a1c0a'); sndSlam(); shake = Math.max(shake, 26);
         rigs.splice(i, 1); continue;
       }
+    } else if (plowT > 0 && vanSweep(rg.x, rg.w * 0.5 - 6) && hitY){
+      /* BETA13 — the blade has jurisdiction over the wrong-way freight too */
+      freezeFrame(0.08);
+      killRig(i, 'BLADE.');
+      van.inv = Math.max(van.inv, 0.5);
+      continue;
     } else if (isSuper()){
       if (hitX && hitY){
-        boom(rg.x, rg.y, 92); fireRing(rg.x, rg.y); debris(rg.x, rg.y, '#8a1c0a');
-        sndSlam(); shake = Math.max(shake, 24); superT = Math.max(0.25, superT - 1);
+        superT = Math.max(0.25, superT - 1);
         freezeFrame(0.07);
-        rigs.splice(i, 1); continue;
+        killRig(i, 'NOT TODAY.');
+        continue;
       }
     } else if (van.inv <= 0 && hitX && hitY){
       boom(van.x, van.y, 62); debris(van.x, van.y, '#8a1c0a'); sndSlam();
@@ -5295,7 +5666,16 @@ function update(dt){
       vx: 0, vy: 120, rot: 0, vr: 0, ttl: .18, life: .18, size: 1.6 });
     if (bu.ttl <= 0 || bu.y < -40){ bullets.splice(i, 1); continue; }
     let spent = false;
-    for (const sa of santas){
+    /* BETA13 — a rifle round takes the rig. It is eighteen tons of oncoming
+       wrong-way freight; one in the radiator is a fair trade for the round. */
+    for (let ri = rigs.length - 1; ri >= 0; ri--){
+      const rg = rigs[ri];
+      if (Math.abs(rg.x - bu.x) < rg.w * 0.5 && Math.abs(rg.y - bu.y) < rg.h * 0.5){
+        killRig(ri, 'THROUGH THE GRILLE.');
+        spent = true; break;
+      }
+    }
+    if (!spent) for (const sa of santas){
       if (!sa.dead && santaBox(sa, bu.x, bu.y, 6, 6)){
         hitSanta(sa, 1, bu.y); boom(bu.x,bu.y,30); spent = true; break;
       }
@@ -5572,7 +5952,7 @@ function update(dt){
     }
     const rw = b.kind === 'barrel' ? 15 : 22;
     if (barrelCd <= 0 &&
-        Math.abs(b.x - van.x) < van.hw + rw && Math.abs(b.y - van.y) < van.hh + 14){
+        vanSweep(b.x, rw) && Math.abs(b.y - van.y) < van.hh + 14){
       if (plowT > 0 || isSuper()){
         /* the blade and the Overdrive both simply do not care */
         smashBarrel(i, true);
@@ -6021,6 +6401,7 @@ function update(dt){
         const c = cars[ci];
         if (Math.hypot(c.x - bm.x, c.y - bm.y) < R) explodeCar(ci, false);
       }
+      blastRigs(bm.x, bm.y, R);
       if (boss && boss.state !== 'leave' && Math.hypot(boss.x - bm.x, boss.y - bm.y) < R + 30){
         damageBoss(bm.x);
       }
@@ -6494,8 +6875,22 @@ function update(dt){
       popup(c.x, c.y - 40, 'BROADSIDED.', 17, true);
       continue;
     }
-    if (Math.abs(c.x - van.x) < van.hw + c.hw - 4 && Math.abs(c.y - van.y) < van.hh + c.hh - 6){
+    if (vanSweep(c.x, c.hw - 4) && Math.abs(c.y - van.y) < van.hh + c.hh - 6){
       if (flame.phase){ explodeCar(i, false); continue; }
+      /* BETA13 — the blade is most of a lane wide now, so a car can be caught
+         well outside the bumper line. Out there it is purely the blade's
+         business: no van collision is possible, launch it and move on. */
+      if (plowT > 0 && Math.abs(c.x - van.x) >= van.hw + c.hw - 4){
+        const dirW = (c.x >= van.x) ? 1 : -1;
+        c.shove = dirW * (1450 + Math.random() * 500);
+        c.spin = dirW * (10 + Math.random() * 8);
+        c.y -= 40;
+        boom(c.x, c.y + c.hh * 0.3, 48);
+        sndSlam(); sndScreech();
+        shake = Math.max(shake, 18);
+        popup(c.x, c.y - 40, ['WIDE LOAD.', 'CLEARED.', 'REZONED.', 'SHOULDERED.'][(Math.random() * 4) | 0], 17, true);
+        continue;
+      }
       /* The blade is a blade: traffic gets shoved off your line instead of
          ending the run. Anything shoved past the shoulder is gone. */
       if (plowT > 0){
@@ -6747,7 +7142,7 @@ function update(dt){
     else m.x += m.dir * m.sp * dt;
     m.y += speed * 0.96 * dt;
     if (m.y > H + 90 || m.x < -110 || m.x > W + 110){ mooses.splice(i, 1); continue; }
-    if (Math.abs(m.x - van.x) < van.hw + 26 && Math.abs(m.y - van.y) < van.hh + 26){
+    if (vanSweep(m.x, 26) && Math.abs(m.y - van.y) < van.hh + 26){
       if (flame.phase) continue;
       /* BETA10 — the blade has jurisdiction. Two points a hit, the van pays
          nothing, and the moose learns what municipal equipment is for. */
@@ -6962,7 +7357,7 @@ function update(dt){
       }
       if (d.y > H + 60){ deer.splice(i, 1); continue; }
       if (!flame.phase && (d.kind !== 'ghost' || d.solid) &&
-          Math.abs(d.x - van.x) < van.hw + 15 && Math.abs(d.y - van.y) < van.hh + 15){
+          vanSweep(d.x, 15) && Math.abs(d.y - van.y) < van.hh + 15){
         killDeer(d, van.x, false);
       }
     } else if (d.state === 'gone'){
@@ -7202,20 +7597,48 @@ function drawVan(){
     ctx.restore();
   }
 
+  /* BETA13 — the blade, at its new and frankly unreasonable width. It is
+     wider than the van is long. The mounting arms are drawn back to the
+     bumper so it still reads as bolted on rather than floating. */
   if (plowT > 0 && mode === 'play'){
+    const bw = PLOW_HW;
     ctx.save();
-    ctx.translate(0, -34);
-    ctx.fillStyle = '#e0a13a';
+    ctx.translate(0, -36);
+    /* mounting arms, drawn first so the mouldboard covers their roots */
+    ctx.strokeStyle = '#6f7378'; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(-11, 16); ctx.lineTo(-bw * 0.42, 6); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(11, 16); ctx.lineTo(bw * 0.42, 6); ctx.stroke();
+    /* the mouldboard */
+    const pg = ctx.createLinearGradient(-bw, 0, bw, 0);
+    pg.addColorStop(0, '#a8752a');
+    pg.addColorStop(0.28, '#e0a13a');
+    pg.addColorStop(0.5, '#f2c268');
+    pg.addColorStop(0.72, '#e0a13a');
+    pg.addColorStop(1, '#a8752a');
+    ctx.fillStyle = pg;
     ctx.beginPath();
-    ctx.moveTo(-30, 6); ctx.quadraticCurveTo(-22, -10, 0, -10);
-    ctx.quadraticCurveTo(22, -10, 30, 6); ctx.lineTo(30, 10); ctx.lineTo(-30, 10);
+    ctx.moveTo(-bw, 8);
+    ctx.quadraticCurveTo(-bw * 0.62, -16, 0, -16);
+    ctx.quadraticCurveTo(bw * 0.62, -16, bw, 8);
+    ctx.lineTo(bw, 13); ctx.lineTo(-bw, 13);
     ctx.closePath(); ctx.fill();
-    ctx.strokeStyle = '#a8752a'; ctx.lineWidth = 1.6; ctx.stroke();
+    ctx.strokeStyle = '#8a5f20'; ctx.lineWidth = 1.8; ctx.stroke();
+    /* cutting edge */
     ctx.fillStyle = '#8d8f92';
-    ctx.fillRect(-30, 9, 60, 3.4);
-    ctx.strokeStyle = '#a8752a'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(-12, -8); ctx.lineTo(-12, 9); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(12, -8); ctx.lineTo(12, 9); ctx.stroke();
+    ctx.fillRect(-bw, 11.6, bw * 2, 4.2);
+    ctx.fillStyle = 'rgba(255,255,255,.22)';
+    ctx.fillRect(-bw, 11.6, bw * 2, 1.2);
+    /* ribs — spaced off the width so a wider blade gets more of them */
+    ctx.strokeStyle = '#a8752a'; ctx.lineWidth = 1.1;
+    for (let rx = -bw + 16; rx < bw - 8; rx += 22){
+      ctx.beginPath(); ctx.moveTo(rx, -13 + Math.abs(rx) * 0.055); ctx.lineTo(rx, 11); ctx.stroke();
+    }
+    /* hazard chevrons on the outboard thirds, because it is that wide */
+    ctx.fillStyle = 'rgba(20,16,10,.55)';
+    for (let k = 0; k < 3; k++){
+      ctx.fillRect(-bw + 6 + k * 13, 0.5, 6, 10);
+      ctx.fillRect(bw - 12 - k * 13, 0.5, 6, 10);
+    }
     ctx.restore();
   }
 
@@ -7277,6 +7700,85 @@ function drawFog(){
   ctx.globalAlpha = fogA;
   ctx.drawImage(fogLayer, 0, 0, W, H);
   ctx.globalAlpha = pa;
+}
+
+/* BETA13 — the torch cone. Two stacked wedges under 'lighter' so the core
+   blows out white and the edges stay orange, plus a ragged leading edge that
+   breathes — a flat triangle reads as a spotlight, not a flame. The wedge is
+   drawn in screen space from the van's nose because that is where the
+   collision test measures from; the two must not drift apart. */
+function drawTorchCone(){
+  const noseY = van.y - van.hh;
+  const reach = TORCH_REACH * Math.min(1, 0.45 + torchT * 3);
+  const spread = 16 + reach * TORCH_SPREAD;
+  const flick = 1 + Math.sin(NOW / 40) * 0.06;
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  const wedge = (w, len, col) => {
+    ctx.beginPath();
+    ctx.moveTo(van.x - 11, noseY + 4);
+    ctx.lineTo(van.x - w, noseY - len);
+    /* ragged tip */
+    for (let k = -3; k <= 3; k++){
+      const t = k / 3;
+      ctx.lineTo(van.x + t * w * 0.92,
+                 noseY - len + Math.sin(NOW / 55 + k * 1.7) * len * 0.07);
+    }
+    ctx.lineTo(van.x + w, noseY - len);
+    ctx.lineTo(van.x + 11, noseY + 4);
+    ctx.closePath();
+    ctx.fillStyle = col;
+    ctx.fill();
+  };
+  wedge(spread * flick, reach * flick, 'rgba(255,110,30,0.30)');
+  wedge(spread * 0.62, reach * 0.86, 'rgba(255,170,60,0.34)');
+  wedge(spread * 0.30, reach * 0.60, 'rgba(255,240,200,0.42)');
+  ctx.restore();
+  /* muzzle glow at the nozzle */
+  drawGlow('rgba(255,190,90,0.85)', van.x, noseY, 34, 1);
+}
+
+/* BETA13 — the van during the blaze. It is not hidden behind the wall any
+   more: it is the ordnance. A comet head in the colors, a tail streaming the
+   length of the screen behind it, and the van itself still legible in the
+   middle so you can see who is doing this. */
+function drawFreedomVan(){
+  const cy = van.y, cx = van.x;
+  const t = NOW / 60;
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  /* the tail — three offset lobes in red, white and blue, stacked back down
+     the road so the streak reads as motion rather than a static glow */
+  const lobes = [
+    ['rgba(232,56,79,0.30)',  46, 470, 0],
+    ['rgba(242,239,230,0.26)', 36, 340, 0.8],
+    ['rgba(77,123,255,0.28)',  28, 240, 1.6]
+  ];
+  for (const [col, w, len, ph] of lobes){
+    const wob = Math.sin(t + ph) * 5;
+    ctx.fillStyle = col;
+    ctx.beginPath();
+    ctx.moveTo(cx - w, cy);
+    ctx.quadraticCurveTo(cx - w * 0.5 + wob, cy + len * 0.5, cx, cy + len);
+    ctx.quadraticCurveTo(cx + w * 0.5 + wob, cy + len * 0.5, cx + w, cy);
+    ctx.closePath();
+    ctx.fill();
+  }
+  /* the head */
+  drawGlow('rgba(255,240,210,0.95)', cx, cy - 6, 78 + Math.sin(t * 2) * 8, 1);
+  drawGlow('rgba(232,56,79,0.75)',   cx, cy - 22, 60, 1);
+  drawGlow('rgba(77,123,255,0.70)',  cx, cy + 14, 54, 1);
+  ctx.restore();
+  /* the van, still visible inside its own fireball */
+  ctx.save();
+  ctx.globalAlpha = 0.92;
+  drawVan();
+  ctx.restore();
+  /* licks of flame off the leading edge */
+  for (let k = -2; k <= 2; k++){
+    drawGlyph('🔥', 34, cx + k * 17, cy - van.hh - 10 + Math.sin(t * 3 + k) * 6,
+      1 + Math.sin(t * 4 + k * 2) * 0.18);
+  }
 }
 
 function drawFireWall(){
@@ -8667,6 +9169,19 @@ function render(){
     ctx.fillRect(0, 0, W, H);
     ctx.globalAlpha = pa; ctx.globalCompositeOperation = pc;
   }
+  /* BETA13 — FREEDOM MODE washes the screen in the colors. Three-step cycle
+     rather than a smooth blend: it should read as a strobe on a fire truck,
+     not a gradient. Held down to a third of full so the road stays drivable
+     and it does not become a photosensitivity problem. */
+  if (freedomWash > 0){
+    const step = (NOW / 90 | 0) % 3;
+    const col = step === 0 ? '232,56,79' : step === 1 ? '242,239,230' : '77,123,255';
+    const pa = ctx.globalAlpha, pc = ctx.globalCompositeOperation;
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.fillStyle = 'rgba(' + col + ',' + (0.17 * freedomWash).toFixed(3) + ')';
+    ctx.fillRect(0, 0, W, H);
+    ctx.globalAlpha = pa; ctx.globalCompositeOperation = pc;
+  }
 
   for (const m of meteors){
     ctx.save();
@@ -8677,8 +9192,10 @@ function render(){
   }
 
   if (mode !== 'menu'){
-    if (flame.phase === 'launch' || flame.phase === 'blaze'){
+    if (flame.phase === 'launch'){
       /* the van IS the wall */
+    } else if (flame.phase === 'blaze'){
+      drawFreedomVan();
     } else if (flame.phase === 'return'){
       ctx.save();
       ctx.translate(0, flame.ry - van.y);
@@ -8698,6 +9215,7 @@ function render(){
       ctx.globalCompositeOperation = pc;
     } else {
       drawVan();
+      if (torchBurning()) drawTorchCone();
     }
     drawBellRing();
     if (shells.length) drawShells();
@@ -8815,6 +9333,11 @@ window.__OD = {
     rams: rams.length, serpents: serpents.length,
     ghosts: deer.filter(d => d.kind === 'ghost').length, hitStop: +hitStop.toFixed(3),
     nearMisses: nearIdx, charge: +charge.toFixed(2), rank: rankFor(ledger.lifetime),
+    /* BETA13 */
+    lifetime: ledger.lifetime, superOn: isSuper(), poKills, freedomArmed,
+    flame: flame.phase, torchFuel: +torchFuel.toFixed(2), torchOn: torchBurning(),
+    plowT: +plowT.toFixed(1), throttle: +throttle.toFixed(2),
+    ammo: { rifle: rifleAmmo, plow: plowAmmo, mortar: mortarAmmo, spray: sprayAmmo, bomb: bombAmmo },
     hunters: hunters.length, barrels: barrels.length, closure: closure ? closure.left : null,
     coneHits, closureSide: closure ? closure.side : null,
     mortarAmmo, shells: shells.length, coneCache: coneSuper.size,
@@ -8829,6 +9352,8 @@ window.__OD = {
   can: () => spawnCan(),
   slick: () => spawnSlick(),
   rig: () => spawnRig(),
+  /* a rig in your lane, for checking that a weapon actually reaches one */
+  rigHere: () => { spawnRig(); rigs[rigs.length - 1].x = van.x; return rigs.length; },
   horn: () => { hornCd = 0; soundHorn(); },
   rifle: () => awardRifle(),
   shoot: () => fireRifle(),
@@ -8858,6 +9383,15 @@ window.__OD = {
   farm: () => spawnCar(Math.random() < 0.4 ? 13 : 12),
   logger: () => spawnCar(19),
   ranger: () => spawnCar(20),
+  /* BETA13 — the two long unlocks are ledger-gated, which is a slow thing to
+     test honestly. These lie to the ledger so a build can be checked. */
+  grant: (n) => { ledger.lifetime = (n == null ? FREEDOM_LIFETIME : n);
+    updateTorchBtn(); updateFlameBtn(); return ledger.lifetime; },
+  torch: (on) => { if (on === false) torchOff(); else torchOn(); return torchBurning(); },
+  /* honest: runs the real arming path, so the 1500 gate is testable */
+  freedom: () => { if (!isSuper()) activateSuper(); poKills = FREEDOM_KILLS; armFreedom();
+    return freedomArmed ? 'armed — press it' : 'locked · needs ' + FREEDOM_LIFETIME + ' lifetime'; },
+  blaze: () => { __OD.freedom(); startFlame(); return flame.phase; },
   squatch: () => spawnSquatch(),
   squatchTier: (n) => { squatchSightings = (n|0) - 1; return spawnSquatch(); },
   spray: () => awardSpray(),
