@@ -253,7 +253,8 @@
     <div class="howto">Drag to steer · Only the 🦌 count — and they are scarce<br>
       🐐🐑🐷 protected · 🚶 very protected · a stopped van is never a crime<br>
       🎺 always opens a lane · 🔔 the dinner bell, once per country<br>
-      No ordnance past the gate — streaks buy the zoo's courtesies instead</div>
+      Only grandfather's rifle passes the gate — mind your backstop<br>
+      Streaks buy the zoo's courtesies: samples, donuts, closing time</div>
     <div class="ledgerline" id="ledgerLine">THE LEDGER AWAITS ITS FIRST ENTRY</div>
     <button class="btn" id="startBtn">Ride for Freedom</button>
     <div><button class="manlink" id="menuManualBtn">Consult the Field Manual</button></div>
@@ -328,8 +329,8 @@
           <div class="mdesc">Not prey. Not traffic. No longer non-negotiable. Three points of health, and the blade, the treeline, the rifle and the airburst all have jurisdiction now. The bumper still pays the old tax — that is not diplomacy, that is mass. The meteors still bounce off, and the moose still declines to notice.</div></div>
         <div class="mrow"><div class="mterm">The Country</div>
           <div class="mdesc">This beta is locked to the Orchard Petting Zoo — the tenth America, and the hardest. A gravel lane through a working petting zoo in an apple orchard. Deer are scarce here; goats, sheep, ponies and paying customers are not, and every one of them is protected. Cars park in the lane with the flashers on to feed the pens, the hay ride throws feed at rolling speed, and the animals mob whatever hits the ground. The speed limit is the only mercy.</div></div>
-        <div class="mrow"><div class="mterm">Ordinance 12 <i>no ordnance</i></div>
-          <div class="mdesc">The rifle, the blade, the bottle, the mortar, the bombers, the hounds and the streak cavalry are all impounded at the gate. Every deer in the zoo is bumper work, threaded by hand through a crowd with rights. What the streak buys instead is the COURTESY LADDER — the zoo's own hospitality, tier by tier. See CAVALRY.</div></div>
+        <div class="mrow"><div class="mterm">Ordinance 12 <i>as amended</i></div>
+          <div class="mdesc">The blade, the bottle, the mortar, the bombers, the hounds and the streak cavalry are all impounded at the gate. The lone exception, by amendment: grandfather's rifle, licensed for precision work, because the department respects exactly one kind of restraint. A round that passes a protected animal or a guest is a spent round and a confiscated streak — check your backstop. Beyond that, every deer is bumper work. The streak also buys the COURTESY LADDER — see CAVALRY.</div></div>
         <div class="mrow"><div class="mterm">The Feeding Stop</div>
           <div class="mdesc">A car ahead pulls to the fence line, flashers on, and works through a bag of feed out both windows. The pens empty onto the road around it. One stop at a time, always at a shoulder — the middle of the lane is never theirs to take. The horn embarrasses them back into motion immediately.</div></div>
         <div class="mrow"><div class="mterm">The Stopped Van <i>always legal</i></div>
@@ -351,7 +352,7 @@
       <div class="mpage" id="mp-ord">
         <div class="mintro">Issued equipment. Earned, not given —<br>this department has a budget.</div>
         <div class="mrow"><div class="mterm">⚠ Zoo Notice <i>this beta</i></div>
-          <div class="mdesc">Ordinance 12 is in force at the Orchard Petting Zoo: everything below the bell is impounded at the gate. Inside the zoo you carry a horn, a bell, and your judgment. The rest of this page describes the other nine Americas, which this beta politely does not visit.</div></div>
+          <div class="mdesc">Ordinance 12 is in force at the Orchard Petting Zoo: everything below is impounded at the gate except the horn, the bell, and — by amendment — grandfather's rifle, which is licensed for aimed zoo work and billed accordingly when a round strays near anything protected. The rest of this page describes the other nine Americas, which this beta politely does not visit.</div></div>
         <div class="mrow"><div class="mterm">🎺 The Horn <i>7s cooldown</i></div>
           <div class="mdesc">One blast. Civilian traffic pulls itself together and hunts deer on your behalf for a few patriotic seconds; the deer panic, which has never once improved a deer's decisions.</div></div>
         <div class="mrow"><div class="mterm">🔔 The Liberty Bell <i>one ring per country</i></div>
@@ -361,7 +362,7 @@
         <div class="mrow"><div class="mterm">🎆 Shell Crate <i>roadside · +2</i></div>
           <div class="mdesc">Roadside, unattended, free. Two shells for the tube, and it comes around often enough that the department has stopped pretending it is an accident. This is either infrastructure or providence and the department declines to say which.</div></div>
         <div class="mrow"><div class="mterm">Grandfather's Rifle <i>streak 8 · or 110 deer</i></div>
-          <div class="mdesc">Eight rounds, each good for two deer in a line, eighteen in the box. Has not missed since the Carter administration. Two on the sasquatch, two on the moose, two on the bird, two on the log with eyes — the season is open on everything. Aimed at traffic it wings the car into a violent spin, and be advised: roughly one motorist in three is armed and files a response. She rides the score as well as the streak, so a bad night in the fog does not cost you the season.</div></div>
+          <div class="mdesc">Eight rounds, each good for two deer in a line, eighteen in the box. Has not missed since the Carter administration. Two on the sasquatch, two on the moose, two on the bird, two on the log with eyes — the season is open on everything. Aimed at traffic it wings the car into a violent spin, and be advised: roughly one motorist in three is armed and files a response. She rides the score as well as the streak, so a bad night in the fog does not cost you the season. In the zoo she arrives early (streak 6, or 60 deer) and answers to zoo law: a round that passes a goat, a sheep, or a man in a souvenir shirt is spent on the spot and takes the streak with it.</div></div>
         <div class="mrow"><div class="mterm">The Plow Blade <i>streak 28</i></div>
           <div class="mdesc">Nine seconds of blade, racked FOUR at a time — every award refills the full set. Deer are rezoned as behind the bumper; traffic is LAUNCHED, spinning, into whatever it lands on, and whatever it lands on goes too. Municipal equipment, liberated for federal use, returned in worse condition.</div></div>
         <div class="mrow"><div class="mterm">The Bottle <i>streak 45 · or 180 deer</i></div>
@@ -1037,10 +1038,12 @@ const ZOO_KINDS = [
 ];
 const VISITOR_KINDS = ['🚶','🚶‍♀️','👩‍🌾','👨‍🌾','🧑‍🍼','🚶','🚶‍♀️'];
 const FEED_JUNK = ['🥕','🍎','🥬','🌽','🥜','🍟','🌭','🍩'];
-const ORCHARD_SPEED_CAP = 0.42;       /* throttle ceiling outside Overdrive */
-const ORCHARD_SUPER_CAP = 0.55;       /* ~30 mph equivalent under the colors */
+/* PLAYTEST — a touch more pace, and a firmer pedal to answer it */
+const ORCHARD_SPEED_CAP = 0.46;       /* throttle ceiling outside Overdrive */
+const ORCHARD_SUPER_CAP = 0.60;       /* under the colors */
+const ORCHARD_BRAKE_MULT = 1.4;       /* the zoo brake bites harder */
 const ORCHARD_SUPER_NEED = 22;        /* significantly more deer to arm OD */
-const ZOO_CAP = 15;                   /* concurrent protected animals */
+const ZOO_CAP = 12;                   /* concurrent protected animals */
 const VISITOR_CAP = 6;                /* concurrent pedestrians */
 function inOrchard(){
   const id = (biomeMix < 0.5 ? curBiome() : nxtBiome()).id;
@@ -4581,10 +4584,24 @@ function spawnBuggy(){
 function spawnZooAnimal(){
   const kind = ZOO_KINDS[(Math.random() * ZOO_KINDS.length) | 0];
   const fromLeft = Math.random() < 0.5;
+  /* PLAYTEST — spread the herd. Pick the entry row furthest from other
+     animals on the same side, out of a few candidates, so the stock
+     arrives distributed instead of bunched. */
+  let y = 40 + Math.random() * (H * 0.68);
+  let bestGap = -1;
+  for (let t = 0; t < 4; t++){
+    const cy = 40 + Math.random() * (H * 0.68);
+    let nearest = 1e9;
+    for (const o of zooAnimals){
+      const dd = Math.abs(o.y - cy);
+      if (dd < nearest) nearest = dd;
+    }
+    if (nearest > bestGap){ bestGap = nearest; y = cy; }
+  }
   zooAnimals.push({
     kind: kind.key, emoji: kind.emoji, sz: kind.sz, protected: true,
     x: fromLeft ? road.left - 40 : road.right + 40,
-    y: 40 + Math.random() * (H * 0.68),
+    y,
     vx: (fromLeft ? 1 : -1) * (16 + Math.random() * 30),
     face: fromLeft ? 1 : -1, bob: Math.random() * 6.28, state: 'walk',
     /* ORCHARD REWORK — animals live on the road now. They stop to graze,
@@ -5000,6 +5017,15 @@ function killDeer(d, hitterX, assisted, force){
         fireZooTier(3);
         nextZooEncore += 12;
       }
+      /* PLAYTEST — Ordinance 12, amended: grandfather's rifle is licensed
+         for zoo work. One instrument, aimed shots only, and the rounds
+         answer to the same law as the bumper. Everything else stays
+         impounded. */
+      if (rifleAmmo < RIFLE_MAX && (streak >= nextRifleAt || score >= nextRifleScore)){
+        awardRifle();
+        if (streak >= nextRifleAt) nextRifleAt += 10;
+        while (score >= nextRifleScore) nextRifleScore += 90;
+      }
       return;
     }
     if (streak >= nextStreakAt){
@@ -5286,8 +5312,12 @@ function startRun(){
   biomeReset();
   squatchSeen = false; squatchCd = 0; squatchSightings = 0;
   santaT = 18; santaSeen = false;
-  rifleAmmo = 0; rifleShown = -1; nextRifleAt = RIFLE_AWARD_AT; rifleSeen = false; muzzle = 0;
-  nextRifleScore = RIFLE_FIRST_SCORE;
+  /* PLAYTEST — the rifle is licensed inside the zoo: it is the one precision
+     instrument, and deer here are scarce enough to deserve it. Earlier rails
+     than the highway because the scoring runs slower. */
+  rifleAmmo = 0; rifleShown = -1; rifleSeen = false; muzzle = 0;
+  nextRifleAt = inOrchard() ? 6 : RIFLE_AWARD_AT;
+  nextRifleScore = inOrchard() ? 60 : RIFLE_FIRST_SCORE;
   sprayAmmo = 0; sprayShown = -1; nextSprayAt = SPRAY_UNLOCK; nextSprayScore = 180; spraySeen = false;
   updateSprayBtn();
   van.recoil = 0;
@@ -5517,7 +5547,7 @@ function update(dt){
      brake is off. Brake still ramps linearly all the way to a dead stop. */
   {
     if (pedalBrake){
-      throttle = Math.max(0, throttle - dt * BRAKE_RATE);
+      throttle = Math.max(0, throttle - dt * BRAKE_RATE * (inOrchard() ? ORCHARD_BRAKE_MULT : 1));
       if (throttle === 0 && !fullStopShown){
         fullStopShown = true;
         popup(van.x, van.y - 60, 'FULL STOP.', 15, false);
@@ -5545,7 +5575,7 @@ function update(dt){
     /* hard ceiling: crawl outside OD, ~30 mph under the colors */
     const cap = superOn ? ORCHARD_SUPER_CAP : ORCHARD_SPEED_CAP;
     if (throttle > cap) throttle = cap;
-    orchardMult = 0.72; /* whole biome runs softer */
+    orchardMult = 0.76; /* whole biome runs softer, but with some road in it */
   }
   const speed = baseSpeed * throttle * (superOn ? 1.5 : 1) * freedomMult * orchardMult;
   /* the pileup readout */
@@ -5854,7 +5884,7 @@ function update(dt){
       zooT -= dt;
       if (zooT <= 0 && zooAnimals.length < ZOO_CAP){
         spawnZooAnimal();
-        zooT = 1.1 + Math.random() * 1.6;
+        zooT = 1.7 + Math.random() * 2.1;
       }
       visitorT -= dt;
       if (visitorT <= 0 && visitors.length < VISITOR_CAP){
@@ -6369,6 +6399,43 @@ function update(dt){
       vx: 0, vy: 120, rot: 0, vr: 0, ttl: .18, life: .18, size: 1.6 });
     if (bu.ttl <= 0 || bu.y < -40){ bullets.splice(i, 1); continue; }
     let spent = false;
+    /* ZOO LAW — protected stock and paying guests block the line of fire.
+       The round spends, the animal files a complaint, and the streak is
+       confiscated along with the courtesy ladder. No flag — but check
+       your backstop; grandfather always did. */
+    if (inOrchard()){
+      for (const z of zooAnimals){
+        if (z.state === 'gone') continue;
+        if (Math.abs(z.x - bu.x) < 18 && Math.abs(z.y - bu.y) < 18){
+          z.fleeing = 1.4; z.state = 'walk';
+          z.vx = (Math.random() < 0.5 ? -1 : 1) * (40 + Math.random() * 20);
+          z.face = z.vx < 0 ? -1 : 1;
+          popup(z.x, z.y - 24, 'THAT WAS THE HAY BALE.', 13, false);
+          toast('A ROUND PAST A PROTECTED ANIMAL. THE STREAK IS CONFISCATED.');
+          spent = true;
+          break;
+        }
+      }
+      if (!spent) for (const v of visitors){
+        if (Math.abs(v.x - bu.x) < 14 && Math.abs(v.y - bu.y) < 16){
+          v.state = 'walk'; v.photoT = 99;
+          v.vx = (Math.random() < 0.5 ? -1 : 1) * (40 + Math.random() * 16);
+          v.face = v.vx < 0 ? -1 : 1;
+          popup(v.x, v.y - 26, 'OVER HIS HAT.', 13, false);
+          toast('A ROUND OVER A GUEST. THE STREAK IS CONFISCATED. HE IS BUYING THE SHIRT.');
+          spent = true;
+          break;
+        }
+      }
+      if (spent){
+        combo = 0;
+        streak = 0; nextStreakAt = 15; setStreakChip();
+        zooTierIdx = 0; nextZooEncore = 42;
+        buzz([60, 40, 60]);
+        bullets.splice(i, 1);
+        continue;
+      }
+    }
     /* rigs first so a round spends on the truck */
     for (let ri = rigs.length - 1; ri >= 0; ri--){
       const rg = rigs[ri];
