@@ -2793,6 +2793,376 @@ function drawBear(b){
   ctx.restore();
 }
 
+/* ================= ZOO SPRITE PACK =================
+   ORCHARD REWORK 3 — the protected stock gets real portraiture. Hand-drawn
+   SVG, two poses each (stand / graze), authored facing LEFT and centered in
+   a 64-unit box with feet on a shared baseline. Rasterized once per pose
+   through mkCanvas at 2x supersample and cached; the emoji stay on the
+   payroll as a fallback for the frames before an image decodes. */
+const ZOO_SVGS = {
+  goat: {
+    stand: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#241f19" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="34" cy="39" rx="17" ry="10" fill="#d7d5c9"/>
+        <path d="M23 39L20 54M31 46L30 56M41 46L43 56M48 42L51 54" fill="none"/>
+        <path d="M20 30C16 28 12 29 10 33L11 40C13 43 18 44 22 41L25 35Z" fill="#dcdad0"/>
+        <path d="M12 32L7 29L10 36Z" fill="#b9b8af"/>
+        <path d="M20 30C18 25 20 21 23 19C22 24 23 27 26 29" fill="none" stroke="#7b725f" stroke-width="2"/>
+        <path d="M14 42C15 47 17 49 19 51C18 46 20 43 22 41Z" fill="#77756c"/>
+        <ellipse cx="11.5" cy="36.5" rx="1.2" ry="1" fill="#2c261f" stroke="none"/>
+        <path d="M50 35Q56 31 58 35" fill="none"/>
+      </g>
+    </svg>`,
+    graze: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#241f19" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="35" cy="39" rx="17" ry="10" fill="#d7d5c9"/>
+        <path d="M24 45L22 55M32 47L31 56M42 47L44 56M49 43L51 54" fill="none"/>
+        <path d="M23 39C19 42 16 46 14 50L8 51C6 53 7 56 10 57L17 56C20 53 22 49 26 44Z" fill="#dcdad0"/>
+        <path d="M10 50L6 47L8 53Z" fill="#b9b8af"/>
+        <path d="M17 47C15 43 16 40 19 37C18 42 20 44 22 46" fill="none" stroke="#7b725f" stroke-width="2"/>
+        <path d="M15 54C16 57 18 58 19 59C19 56 20 53 21 51Z" fill="#77756c"/>
+        <ellipse cx="9.5" cy="53.5" rx="1.2" ry="1" fill="#2c261f" stroke="none"/>
+        <path d="M51 35Q56 31 58 35" fill="none"/>
+      </g>
+    </svg>`
+  },
+  llama: {
+    stand: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#241f19" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="36" cy="40" rx="16" ry="9" fill="#e5d4af"/>
+        <path d="M24 39L23 55M31 46L31 56M43 46L44 56M50 41L52 55" fill="none"/>
+        <path d="M24 39C20 34 20 27 20 20C20 14 17 10 13 10C10 10 8 13 9 17L13 29L17 40Z" fill="#ead9b7"/>
+        <path d="M10 12L7 7L12 9ZM17 11L20 6L19 13Z" fill="#d6be91"/>
+        <path d="M10 18Q14 20 18 18" fill="none" stroke="#8a795f" stroke-width="1"/>
+        <path d="M11 16L15 16" stroke="#382f25" stroke-width="1.7"/>
+        <ellipse cx="9.5" cy="20.5" rx="1.1" ry=".8" fill="#342c24" stroke="none"/>
+        <path d="M51 36Q57 33 58 39" fill="none" stroke="#d8c295" stroke-width="3"/>
+      </g>
+    </svg>`,
+    graze: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#241f19" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="36" cy="40" rx="16" ry="9" fill="#e5d4af"/>
+        <path d="M24 45L23 55M31 47L31 56M43 47L44 56M50 43L52 55" fill="none"/>
+        <path d="M24 39C19 42 17 46 15 50L9 52C7 53 7 56 10 57L17 56C21 52 23 47 27 43Z" fill="#ead9b7"/>
+        <path d="M10 51L6 48L9 54ZM16 50L20 47L18 53Z" fill="#d6be91"/>
+        <path d="M9 53L13 53" stroke="#382f25" stroke-width="1.7"/>
+        <ellipse cx="9" cy="55.5" rx="1.1" ry=".8" fill="#342c24" stroke="none"/>
+        <path d="M51 36Q57 33 58 39" fill="none" stroke="#d8c295" stroke-width="3"/>
+      </g>
+    </svg>`
+  },
+  pig: {
+    stand: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#281d1c" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="36" cy="41" rx="18" ry="11" fill="#e99598"/>
+        <ellipse cx="18" cy="39" rx="9" ry="8" fill="#eda3a4"/>
+        <ellipse cx="10.5" cy="41" rx="4.5" ry="3.7" fill="#d9797d"/>
+        <ellipse cx="9" cy="41" rx=".7" ry=".9" fill="#6e4544" stroke="none"/>
+        <ellipse cx="12" cy="41" rx=".7" ry=".9" fill="#6e4544" stroke="none"/>
+        <path d="M18 32L15 27L22 31ZM23 33L26 28L27 35Z" fill="#d77e83"/>
+        <ellipse cx="15.5" cy="36.5" rx="1.1" ry="1" fill="#312421" stroke="none"/>
+        <path d="M26 49L25 56M35 50L35 56M45 49L46 56M51 47L53 55" fill="none"/>
+        <path d="M54 38Q61 35 58 31Q56 29 55 32" fill="none"/>
+      </g>
+    </svg>`,
+    graze: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#281d1c" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="36" cy="41" rx="18" ry="11" fill="#e99598"/>
+        <ellipse cx="19" cy="47" rx="9" ry="7" fill="#eda3a4"/>
+        <ellipse cx="10.5" cy="52" rx="4.8" ry="3.5" fill="#d9797d"/>
+        <ellipse cx="9" cy="52" rx=".7" ry=".9" fill="#6e4544" stroke="none"/>
+        <ellipse cx="12" cy="52" rx=".7" ry=".9" fill="#6e4544" stroke="none"/>
+        <path d="M17 42L14 38L21 41ZM23 42L26 38L27 44Z" fill="#d77e83"/>
+        <ellipse cx="15.5" cy="47" rx="1.1" ry="1" fill="#312421" stroke="none"/>
+        <path d="M27 49L26 56M35 50L35 56M45 49L46 56M51 47L53 55" fill="none"/>
+        <path d="M54 38Q61 35 58 31Q56 29 55 32" fill="none"/>
+      </g>
+    </svg>`
+  },
+  peacock: {
+    stand: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#17241f" stroke-width="1.25" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M31 46C39 34 50 27 60 26C56 37 49 46 36 50Z" fill="#267b65"/>
+        <ellipse cx="51" cy="32" rx="4" ry="6" fill="#6ca35d"/><ellipse cx="51" cy="32" rx="2" ry="3" fill="#c9a961" stroke="none"/><ellipse cx="51" cy="32" rx=".9" ry="1.7" fill="#183f4d" stroke="none"/>
+        <ellipse cx="46" cy="40" rx="4" ry="6" fill="#6ca35d"/><ellipse cx="46" cy="40" rx="2" ry="3" fill="#c9a961" stroke="none"/><ellipse cx="46" cy="40" rx=".9" ry="1.7" fill="#183f4d" stroke="none"/>
+        <ellipse cx="55" cy="42" rx="4" ry="6" fill="#6ca35d"/><ellipse cx="55" cy="42" rx="2" ry="3" fill="#c9a961" stroke="none"/><ellipse cx="55" cy="42" rx=".9" ry="1.7" fill="#183f4d" stroke="none"/>
+        <ellipse cx="31" cy="42" rx="10" ry="8" fill="#176c7a"/>
+        <path d="M24 42C20 37 18 31 17 24L12 20L10 24L14 29L18 45Z" fill="#1d7287"/>
+        <ellipse cx="12.5" cy="21.5" rx="1" ry="1" fill="#1d1d18" stroke="none"/>
+        <path d="M10 20L6 19L10 23Z" fill="#c9a961"/>
+        <path d="M15 18L14 14M12 18L10 14M17 19L19 15" fill="none"/>
+        <path d="M27 48L26 56M34 48L35 56" fill="none"/>
+      </g>
+    </svg>`,
+    graze: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#17241f" stroke-width="1.25" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M31 46C39 34 50 27 60 26C56 37 49 46 36 50Z" fill="#267b65"/>
+        <ellipse cx="51" cy="32" rx="4" ry="6" fill="#6ca35d"/><ellipse cx="51" cy="32" rx="2" ry="3" fill="#c9a961" stroke="none"/><ellipse cx="51" cy="32" rx=".9" ry="1.7" fill="#183f4d" stroke="none"/>
+        <ellipse cx="46" cy="40" rx="4" ry="6" fill="#6ca35d"/><ellipse cx="46" cy="40" rx="2" ry="3" fill="#c9a961" stroke="none"/><ellipse cx="46" cy="40" rx=".9" ry="1.7" fill="#183f4d" stroke="none"/>
+        <ellipse cx="55" cy="42" rx="4" ry="6" fill="#6ca35d"/><ellipse cx="55" cy="42" rx="2" ry="3" fill="#c9a961" stroke="none"/><ellipse cx="55" cy="42" rx=".9" ry="1.7" fill="#183f4d" stroke="none"/>
+        <ellipse cx="31" cy="42" rx="10" ry="8" fill="#176c7a"/>
+        <path d="M24 43C20 45 17 49 14 53L9 54L7 56L11 58L16 56L20 50Z" fill="#1d7287"/>
+        <ellipse cx="10" cy="54.5" rx="1" ry="1" fill="#1d1d18" stroke="none"/>
+        <path d="M8 55L4 56L8 58Z" fill="#c9a961"/>
+        <path d="M27 48L26 56M34 48L35 56" fill="none"/>
+      </g>
+    </svg>`
+  },
+  turkey: {
+    stand: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#241c17" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M43 44C54 43 59 35 58 25C51 25 46 28 42 34C43 26 40 21 35 18C30 22 29 28 31 35C27 29 22 27 17 28C16 36 21 43 29 46Z" fill="#7f3e2d"/>
+        <path d="M40 42C49 39 53 33 53 27M36 39C41 31 41 25 36 20M31 40C26 35 22 32 18 32" fill="none" stroke="#c9a961" stroke-width="1"/>
+        <ellipse cx="32" cy="44" rx="11" ry="8" fill="#5c3828"/>
+        <path d="M24 42C19 38 17 33 16 29L12 28C9 30 10 34 13 35L18 35L22 45Z" fill="#7f6653"/>
+        <path d="M12 29L8 27L11 31Z" fill="#c9a961"/>
+        <path d="M13 34Q11 39 14 41" fill="none" stroke="#b83f34" stroke-width="2"/>
+        <ellipse cx="12" cy="31.5" rx="1" ry="1" fill="#211b17" stroke="none"/>
+        <path d="M29 50L28 56M37 50L39 56" fill="none"/>
+      </g>
+    </svg>`,
+    graze: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#241c17" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M43 44C54 43 59 35 58 25C51 25 46 28 42 34C43 26 40 21 35 18C30 22 29 28 31 35C27 29 22 27 17 28C16 36 21 43 29 46Z" fill="#7f3e2d"/>
+        <path d="M40 42C49 39 53 33 53 27M36 39C41 31 41 25 36 20M31 40C26 35 22 32 18 32" fill="none" stroke="#c9a961" stroke-width="1"/>
+        <ellipse cx="32" cy="44" rx="11" ry="8" fill="#5c3828"/>
+        <path d="M24 44C20 47 17 50 15 53L10 54C8 55 8 57 11 58L16 57L21 50Z" fill="#7f6653"/>
+        <path d="M10 54L6 54L9 56Z" fill="#c9a961"/>
+        <path d="M12 56Q10 59 13 60" fill="none" stroke="#b83f34" stroke-width="2"/>
+        <ellipse cx="10.5" cy="55.5" rx="1" ry="1" fill="#211b17" stroke="none"/>
+        <path d="M29 50L28 56M37 50L39 56" fill="none"/>
+      </g>
+    </svg>`
+  },
+  sheep: {
+    stand: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#28231d" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M23 45C17 43 16 36 20 33C19 27 25 24 30 27C34 23 40 25 42 29C48 27 53 31 52 36C57 40 53 47 48 47C43 52 35 49 32 49C27 52 22 50 23 45Z" fill="#eee7d4"/>
+        <path d="M21 37C17 34 13 33 10 36C7 39 9 44 13 45L21 43Z" fill="#625d54"/>
+        <path d="M12 35L8 31L9 38Z" fill="#777168"/>
+        <ellipse cx="11" cy="39.5" rx="1" ry="1" fill="#211d19" stroke="none"/>
+        <path d="M25 47L24 56M32 49L32 56M42 49L43 56M49 46L51 55" fill="none" stroke="#514c44"/>
+      </g>
+    </svg>`,
+    graze: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#28231d" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M23 45C17 43 16 36 20 33C19 27 25 24 30 27C34 23 40 25 42 29C48 27 53 31 52 36C57 40 53 47 48 47C43 52 35 49 32 49C27 52 22 50 23 45Z" fill="#eee7d4"/>
+        <path d="M23 43C18 46 15 49 13 53L8 54C6 56 8 58 11 58L16 56L22 49Z" fill="#625d54"/>
+        <path d="M10 53L6 50L8 56Z" fill="#777168"/>
+        <ellipse cx="9" cy="55.5" rx="1" ry="1" fill="#211d19" stroke="none"/>
+        <path d="M25 47L24 56M32 49L32 56M42 49L43 56M49 46L51 55" fill="none" stroke="#514c44"/>
+      </g>
+    </svg>`
+  },
+  pony: {
+    stand: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#241d18" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="37" cy="39" rx="17" ry="10" fill="#9a653f"/>
+        <path d="M24 38L21 53L22 56M31 47L30 56M43 47L45 56M51 41L53 55" fill="none"/>
+        <path d="M23 38C19 34 17 29 16 24L11 21C8 21 7 25 9 28L15 36L20 42Z" fill="#a97249"/>
+        <path d="M11 22L8 16L14 21ZM17 24L20 18L20 27Z" fill="#6e432f"/>
+        <path d="M20 29C21 25 22 21 21 18C26 22 27 29 25 35Z" fill="#4e3024"/>
+        <ellipse cx="10.5" cy="25.5" rx="1" ry="1" fill="#201b17" stroke="none"/>
+        <path d="M52 36Q59 39 57 50" fill="none" stroke="#4e3024" stroke-width="3"/>
+        <path d="M33 39Q40 35 46 39" fill="none" stroke="#c9a961" stroke-width="1.2"/>
+      </g>
+    </svg>`,
+    graze: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#241d18" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="37" cy="39" rx="17" ry="10" fill="#9a653f"/>
+        <path d="M24 45L22 55M31 47L30 56M43 47L45 56M51 42L53 55" fill="none"/>
+        <path d="M24 38C19 41 16 46 14 51L9 53C6 54 7 57 10 58L16 56L21 49L27 43Z" fill="#a97249"/>
+        <path d="M10 52L7 47L13 51ZM16 50L20 46L19 53Z" fill="#6e432f"/>
+        <path d="M21 47C23 43 24 39 23 36C28 40 28 44 26 48Z" fill="#4e3024"/>
+        <ellipse cx="9.5" cy="55" rx="1" ry="1" fill="#201b17" stroke="none"/>
+        <path d="M52 36Q59 39 57 50" fill="none" stroke="#4e3024" stroke-width="3"/>
+        <path d="M33 39Q40 35 46 39" fill="none" stroke="#c9a961" stroke-width="1.2"/>
+      </g>
+    </svg>`
+  },
+  donkey: {
+    stand: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#221d19" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="37" cy="40" rx="17" ry="9.5" fill="#7d6757"/>
+        <path d="M24 41L22 55M31 47L30 56M43 47L44 56M51 42L53 55" fill="none"/>
+        <path d="M23 39C19 35 16 31 15 26L10 23C7 23 6 27 8 30L14 36L20 43Z" fill="#806b5c"/>
+        <ellipse cx="9.5" cy="28" rx="5" ry="4" fill="#a39786"/>
+        <path d="M11 23L7 12C7 9 10 9 12 12L14 23ZM17 26L16 13C16 10 19 10 20 13L20 28Z" fill="#756052"/>
+        <ellipse cx="9" cy="26" rx="1" ry="1" fill="#211c18" stroke="none"/>
+        <path d="M53 37Q59 42 57 50" fill="none" stroke="#4a3a32" stroke-width="2"/>
+        <ellipse cx="57" cy="51" rx="2.3" ry="3.5" fill="#3f332d"/>
+        <path d="M34 33L42 46" fill="none" stroke="#4f4138" stroke-width="1.1"/>
+      </g>
+    </svg>`,
+    graze: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#221d19" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="37" cy="40" rx="17" ry="9.5" fill="#7d6757"/>
+        <path d="M24 46L22 55M31 47L30 56M43 47L44 56M51 43L53 55" fill="none"/>
+        <path d="M24 40C19 43 16 47 14 51L9 53C6 54 7 57 10 58L16 56L21 49L27 44Z" fill="#806b5c"/>
+        <ellipse cx="9.5" cy="54" rx="5" ry="3.5" fill="#a39786"/>
+        <path d="M12 50L8 40C8 37 11 37 13 40L15 51ZM17 50L17 39C17 36 20 36 21 39L20 52Z" fill="#756052"/>
+        <ellipse cx="9" cy="52.5" rx="1" ry="1" fill="#211c18" stroke="none"/>
+        <path d="M53 37Q59 42 57 50" fill="none" stroke="#4a3a32" stroke-width="2"/>
+        <ellipse cx="57" cy="51" rx="2.3" ry="3.5" fill="#3f332d"/>
+        <path d="M34 33L42 46" fill="none" stroke="#4f4138" stroke-width="1.1"/>
+      </g>
+    </svg>`
+  },
+  calf: {
+    stand: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#251d18" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="20" y="32" width="34" height="18" rx="7" fill="#8b6248"/>
+        <path d="M24 48L23 56M32 49L32 56M44 49L45 56M51 47L53 55" fill="none"/>
+        <path d="M22 37C18 33 14 31 10 33C7 35 8 40 12 42L21 42Z" fill="#936a50"/>
+        <ellipse cx="10" cy="38" rx="5" ry="4" fill="#c4b09a"/>
+        <path d="M12 33L7 29L8 36ZM18 34L23 31L20 38Z" fill="#76513e"/>
+        <ellipse cx="10" cy="35.5" rx="1" ry="1" fill="#211b17" stroke="none"/>
+        <path d="M29 32C30 39 35 43 41 42L45 33Z" fill="#eadfca" stroke="none"/>
+        <path d="M48 43C46 46 47 49 51 50" fill="#eadfca" stroke="none"/>
+        <path d="M54 36Q59 40 58 48" fill="none"/>
+      </g>
+    </svg>`,
+    graze: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#251d18" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="20" y="32" width="34" height="18" rx="7" fill="#8b6248"/>
+        <path d="M24 48L23 56M32 49L32 56M44 49L45 56M51 47L53 55" fill="none"/>
+        <path d="M23 39C18 43 15 47 13 51L8 53C6 55 7 57 10 58L16 56L21 49L27 44Z" fill="#936a50"/>
+        <ellipse cx="9.5" cy="54" rx="5" ry="3.7" fill="#c4b09a"/>
+        <path d="M11 50L6 47L8 54ZM17 50L22 47L19 54Z" fill="#76513e"/>
+        <ellipse cx="9" cy="52.5" rx="1" ry="1" fill="#211b17" stroke="none"/>
+        <path d="M29 32C30 39 35 43 41 42L45 33Z" fill="#eadfca" stroke="none"/>
+        <path d="M48 43C46 46 47 49 51 50" fill="#eadfca" stroke="none"/>
+        <path d="M54 36Q59 40 58 48" fill="none"/>
+      </g>
+    </svg>`
+  },
+  rabbit: {
+    stand: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#241f1b" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="36" cy="45" rx="14" ry="9" fill="#b9b5aa"/>
+        <ellipse cx="21" cy="42" rx="8" ry="7" fill="#c4c0b5"/>
+        <path d="M20 37L14 21C13 17 17 16 19 20L23 36ZM25 37L24 20C24 16 28 16 29 20L28 39Z" fill="#c4c0b5"/>
+        <path d="M18 34L15 22M26 34L26 21" stroke="#d89998" stroke-width="1.7"/>
+        <ellipse cx="18.5" cy="41" rx="1" ry="1" fill="#211c18" stroke="none"/>
+        <ellipse cx="13.5" cy="44" rx="1.3" ry="1" fill="#b46f72" stroke="none"/>
+        <ellipse cx="51" cy="41" rx="5" ry="5" fill="#eee8db"/>
+        <path d="M29 51L27 56M42 51L46 56" fill="none"/>
+      </g>
+    </svg>`,
+    graze: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#241f1b" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="36" cy="45" rx="14" ry="9" fill="#b9b5aa"/>
+        <ellipse cx="21" cy="50" rx="8" ry="6" fill="#c4c0b5"/>
+        <path d="M21 46L16 32C15 28 19 27 21 31L24 46ZM26 46L26 31C26 27 30 28 31 32L29 48Z" fill="#c4c0b5"/>
+        <path d="M19 43L17 32M28 43L28 32" stroke="#d89998" stroke-width="1.7"/>
+        <ellipse cx="18" cy="50" rx="1" ry="1" fill="#211c18" stroke="none"/>
+        <ellipse cx="13.5" cy="53" rx="1.3" ry="1" fill="#b46f72" stroke="none"/>
+        <ellipse cx="51" cy="41" rx="5" ry="5" fill="#eee8db"/>
+        <path d="M29 51L27 56M42 51L46 56" fill="none"/>
+      </g>
+    </svg>`
+  },
+  duck: {
+    stand: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#222018" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="37" cy="45" rx="15" ry="9" fill="#d9b84d"/>
+        <path d="M29 45Q37 37 46 44Q40 49 32 50Z" fill="#b69035"/>
+        <path d="M24 42C20 38 18 33 18 28C18 23 14 21 11 24C8 27 10 32 14 34L20 45Z" fill="#ddb94d"/>
+        <ellipse cx="11" cy="27" rx="1" ry="1" fill="#201d18" stroke="none"/>
+        <path d="M10 29L4 31L10 34Z" fill="#d78635"/>
+        <path d="M31 52L29 56M43 52L45 56" fill="none" stroke="#d78635"/>
+      </g>
+    </svg>`,
+    graze: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#222018" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="37" cy="45" rx="15" ry="9" fill="#d9b84d"/>
+        <path d="M29 45Q37 37 46 44Q40 49 32 50Z" fill="#b69035"/>
+        <path d="M25 44C20 47 17 50 15 53L10 54C7 55 8 58 11 58L17 56L22 50Z" fill="#ddb94d"/>
+        <ellipse cx="10.5" cy="54" rx="1" ry="1" fill="#201d18" stroke="none"/>
+        <path d="M9 55L4 56L9 58Z" fill="#d78635"/>
+        <path d="M31 52L29 56M43 52L45 56" fill="none" stroke="#d78635"/>
+      </g>
+    </svg>`
+  },
+  goose: {
+    stand: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#211e19" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="39" cy="45" rx="16" ry="9" fill="#e7e2d3"/>
+        <path d="M27 43Q37 37 48 44Q41 49 31 50Z" fill="#b6b2a8"/>
+        <path d="M27 44C22 39 21 33 21 26C21 19 17 16 13 18C9 20 10 25 14 28L19 31L21 46Z" fill="#ede8dc"/>
+        <path d="M13 18C10 18 8 20 8 23L14 25Z" fill="#4c5148"/>
+        <ellipse cx="11.5" cy="21" rx="1" ry="1" fill="#171714" stroke="none"/>
+        <path d="M9 24L3 25L9 28Z" fill="#d98638"/>
+        <path d="M33 52L31 56M46 52L48 56" fill="none" stroke="#d98638"/>
+        <path d="M53 42Q58 40 59 36" fill="none"/>
+      </g>
+    </svg>`,
+    graze: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#211e19" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="39" cy="45" rx="16" ry="9" fill="#e7e2d3"/>
+        <path d="M27 43Q37 37 48 44Q41 49 31 50Z" fill="#b6b2a8"/>
+        <path d="M27 44C21 47 18 50 16 53L11 54C8 55 8 58 11 59L17 57L22 51Z" fill="#ede8dc"/>
+        <path d="M11 53C8 53 7 55 8 57L13 56Z" fill="#4c5148"/>
+        <ellipse cx="10.5" cy="54.5" rx="1" ry="1" fill="#171714" stroke="none"/>
+        <path d="M8 56L3 57L8 59Z" fill="#d98638"/>
+        <path d="M33 52L31 56M46 52L48 56" fill="none" stroke="#d98638"/>
+        <path d="M53 42Q58 40 59 36" fill="none"/>
+      </g>
+    </svg>`
+  },
+  chick: {
+    stand: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#241f17" stroke-width="1.45" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="35" cy="45" rx="12" ry="10" fill="#f0cf54"/>
+        <circle cx="23" cy="39" r="7" fill="#f4d75f"/>
+        <path d="M18 38L12 41L18 43Z" fill="#d78b37"/>
+        <ellipse cx="21" cy="37.5" rx="1" ry="1" fill="#211c16" stroke="none"/>
+        <path d="M33 46Q39 40 44 46Q39 49 34 50Z" fill="#d5aa39"/>
+        <path d="M31 53L29 56M40 53L42 56" fill="none" stroke="#d78b37"/>
+      </g>
+    </svg>`,
+    graze: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#241f17" stroke-width="1.45" stroke-linejoin="round" stroke-linecap="round">
+        <ellipse cx="35" cy="45" rx="12" ry="10" fill="#f0cf54"/>
+        <circle cx="23" cy="50" r="7" fill="#f4d75f"/>
+        <path d="M18 51L12 54L18 56Z" fill="#d78b37"/>
+        <ellipse cx="21" cy="48" rx="1" ry="1" fill="#211c16" stroke="none"/>
+        <path d="M33 46Q39 40 44 46Q39 49 34 50Z" fill="#d5aa39"/>
+        <path d="M31 53L29 56M40 53L42 56" fill="none" stroke="#d78b37"/>
+      </g>
+    </svg>`
+  }
+};
+const zooSpriteCache = new Map();
+function zooSprite(key, pose){
+  pose = pose === 'graze' ? 'graze' : 'stand';
+  const cacheKey = key + ':' + pose;
+  let entry = zooSpriteCache.get(cacheKey);
+  if (entry) return entry;
+  const animal = ZOO_SVGS[key];
+  if (!animal) return null;
+  entry = { c: null, w: 64, h: 64, ready: false };
+  zooSpriteCache.set(cacheKey, entry);
+  const img = new Image();
+  img.onload = () => {
+    try{
+      /* bake through mkCanvas so the sprite carries the same DPR-aware
+         supersampling as the rest of the fleet */
+      const [c, g] = mkCanvas(64, 64, 2);
+      g.imageSmoothingEnabled = true;
+      if (g.imageSmoothingQuality) g.imageSmoothingQuality = 'high';
+      g.drawImage(img, 0, 0, 64, 64);
+      entry.c = c;
+      entry.ready = true;
+    }catch(e){}
+  };
+  /* data URI, not a blob URL — survives the strictest self-contained CSP */
+  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(animal[pose]);
+  return entry;
+}
+/* warm the whole barn at boot so nothing pops in mid-run */
+for (const k in ZOO_SVGS){ zooSprite(k, 'stand'); zooSprite(k, 'graze'); }
+
 /* ================= buttons ================= */
 const muteBtn = document.getElementById('muteBtn');
 muteBtn.addEventListener('click', () => {
@@ -8451,7 +8821,7 @@ function drawBellRing(){
 /* ===================== WINTER WEATHER ===================== */
 /* ORCHARD REWORK — the grounds, drawn by hand. */
 const ZOO_SIGN_TEXT = ['PETTING ZOO', 'PLEASE DO NOT FEED', 'U-PICK ½ MI', 'SLOW · ANIMALS', 'CIDER AHEAD', 'GOAT XING'];
-const PEN_STOCK = ['🐐','🐑','🐷','🦙','🐰','🐴'];
+const PEN_STOCK = ['goat','sheep','pig','llama','rabbit','pony'];
 function drawOrchardDecor(dc){
   const k = dc.size / 34;
   ctx.save(); ctx.translate(dc.x, dc.y); ctx.scale(k, k);
@@ -8484,11 +8854,10 @@ function drawOrchardDecor(dc){
     ctx.strokeRect(-26, -18, 52, 36);
     ctx.beginPath(); ctx.moveTo(-26, -6); ctx.lineTo(26, -6); ctx.moveTo(-26, 6); ctx.lineTo(26, 6);
     ctx.stroke();
-    ctx.font = '14px serif';
-    const p1 = PEN_STOCK[(dc.seed * 7 | 0) % PEN_STOCK.length];
-    const p2 = PEN_STOCK[(dc.seed * 13 | 0) % PEN_STOCK.length];
-    ctx.fillText(p1, -10, Math.sin(dc.seed + NOW / 700) * 3);
-    ctx.fillText(p2, 11, Math.cos(dc.seed + NOW / 900) * 3);
+    const p1 = zooSprite(PEN_STOCK[(dc.seed * 7 | 0) % PEN_STOCK.length], 'stand');
+    const p2 = zooSprite(PEN_STOCK[(dc.seed * 13 | 0) % PEN_STOCK.length], 'graze');
+    if (p1 && p1.ready) ctx.drawImage(p1.c, -22, -12 + Math.sin(dc.seed + NOW / 700) * 3, 24, 24);
+    if (p2 && p2.ready) ctx.drawImage(p2.c, -1, -12 + Math.cos(dc.seed + NOW / 900) * 3, 24, 24);
   } else if (dc.okind === 'stand'){
     /* the farm stand: counter, striped awning, crates of apples */
     ctx.fillStyle = '#6b4a26'; ctx.fillRect(-22, -4, 44, 18);
@@ -8995,15 +9364,25 @@ function render(){
     ctx.globalAlpha = 1;
   }
 
-  /* protected zoo animals — walking, grazing, mobbing the feed */
+  /* protected zoo animals — walking, grazing, mobbing the feed.
+     ORCHARD REWORK 3 — drawn stock. The SVG barn is authored facing left,
+     so face=1 (moving right) mirrors; the graze pose replaces the old
+     head-tilt cheat. Emoji cover the first frames while a sprite decodes. */
   for (const z of zooAnimals){
     if (z.state === 'gone') continue;
     ctx.save();
     const eating = z.state === 'eat' || z.state === 'graze';
     ctx.translate(z.x, z.y + Math.sin(z.bob) * (eating ? 0.8 : 2));
-    ctx.scale(z.face, 1);
-    if (eating) ctx.rotate(z.face * 0.14);   /* head down in the feed */
-    drawGlyph(z.emoji, z.sz || 26, 0, 0);
+    const zs = zooSprite(z.kind, eating ? 'graze' : 'stand');
+    if (zs && zs.ready){
+      ctx.scale(-z.face, 1);
+      const px = (z.sz || 26) * 1.9;
+      ctx.drawImage(zs.c, -px / 2, -px / 2, px, px);
+    } else {
+      ctx.scale(z.face, 1);
+      if (eating) ctx.rotate(z.face * 0.14);
+      drawGlyph(z.emoji, z.sz || 26, 0, 0);
+    }
     ctx.restore();
     if (z.fleeing > 0.4) drawGlyph('💨', 11, z.x - z.face * (z.sz || 26) * 0.7, z.y + 2);
   }
